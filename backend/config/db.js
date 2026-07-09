@@ -1,24 +1,30 @@
 const mysql = require('mysql2/promise');
+const fs = require('fs');
 require('dotenv').config();
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : '',
-  database: process.env.DB_NAME || 'employee_db',
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+
+  ssl: {
+    ca: fs.readFileSync(__dirname + '/../ca.pem')
+  },
+
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
 
-// Helper to test database connection on load
 async function testConnection() {
   try {
     const connection = await pool.getConnection();
-    console.log('✅ Database connected successfully to database:', process.env.DB_NAME || 'employee_db');
+    console.log("✅ Connected to Aiven MySQL");
     connection.release();
   } catch (error) {
-    console.error('❌ Database connection failed. Please ensure MySQL is running and your configurations in backend/.env are correct.');
+    console.error("❌ Database connection failed");
     console.error(error);
   }
 }

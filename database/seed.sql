@@ -1,6 +1,6 @@
 -- Seed Data for Employee Management Portal
 
-USE employee_db;
+USE defaultdb;
 
 -- 1. Insert Roles
 INSERT INTO roles (id, name) VALUES
