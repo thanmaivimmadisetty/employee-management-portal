@@ -8,22 +8,45 @@ const API =
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [search, setSearch] = useState("");
 
   const [form, setForm] = useState({
     title: "",
     description: "",
     project_name: "",
-    priority: "Medium"
+    assigned_to: "",
+    assigned_by: "",
+    priority: "Medium",
+    due_date: "",
+    estimated_hours: ""
   });
 
   useEffect(() => {
     loadTasks();
+    loadEmployees();
   }, []);
 
   const loadTasks = async () => {
     try {
       const res = await axios.get(`${API}/api/tasks`);
       setTasks(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const loadEmployees = async () => {
+    try {
+      const token = localStorage.getItem("emp_portal_token");
+
+      const res = await axios.get(`${API}/api/employees`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      setEmployees(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -37,16 +60,8 @@ export default function Tasks() {
   };
 
   const createTask = async () => {
-    if (!form.title) {
-      alert("Please enter task title");
-      return;
-    }
-
     try {
-      await axios.post(`${API}/api/tasks`, {
-        ...form,
-        status: "To Do"
-      });
+      await axios.post(`${API}/api/tasks`, form);
 
       alert("Task Created Successfully");
 
@@ -54,15 +69,24 @@ export default function Tasks() {
         title: "",
         description: "",
         project_name: "",
-        priority: "Medium"
+        assigned_to: "",
+        assigned_by: "",
+        priority: "Medium",
+        due_date: "",
+        estimated_hours: ""
       });
 
       loadTasks();
+
     } catch (err) {
       console.error(err);
       alert("Unable to create task");
     }
   };
+
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="p-6">
@@ -105,6 +129,21 @@ export default function Tasks() {
 
           <select
             className="border rounded-lg p-2"
+            name="assigned_to"
+            value={form.assigned_to}
+            onChange={handleChange}
+          >
+            <option value="">Assign Employee</option>
+
+            {employees.map((emp) => (
+              <option key={emp.id} value={emp.id}>
+                {emp.firstName} {emp.lastName}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="border rounded-lg p-2"
             name="priority"
             value={form.priority}
             onChange={handleChange}
@@ -114,6 +153,23 @@ export default function Tasks() {
             <option>High</option>
             <option>Critical</option>
           </select>
+
+          <input
+            className="border rounded-lg p-2"
+            type="date"
+            name="due_date"
+            value={form.due_date}
+            onChange={handleChange}
+          />
+
+          <input
+            className="border rounded-lg p-2"
+            type="number"
+            name="estimated_hours"
+            placeholder="Estimated Hours"
+            value={form.estimated_hours}
+            onChange={handleChange}
+          />
 
         </div>
 
@@ -126,7 +182,17 @@ export default function Tasks() {
 
       </div>
 
-      <KanbanBoard tasks={tasks} />
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="🔍 Search Tasks..."
+          className="border rounded-lg p-3 w-full"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <KanbanBoard tasks={filteredTasks} />
 
     </div>
   );
