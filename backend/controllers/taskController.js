@@ -1,96 +1,90 @@
-const pool = require("../config/db");
+const db = require("../config/db");
 
-
+// Get all tasks
 exports.getTasks = async (req, res) => {
   try {
-    const [tasks] = await pool.query(
-      "SELECT * FROM tasks ORDER BY created_at DESC"
-    );
-    res.json(tasks);
+    const [rows] = await db.query(`
+      SELECT
+        t.*,
+        CONCAT(e.first_name,' ',e.last_name) AS employeeName,
+        CONCAT(a.first_name,' ',a.last_name) AS assignedBy
+      FROM tasks t
+      LEFT JOIN employees e
+        ON t.assigned_to=e.id
+      LEFT JOIN employees a
+        ON t.assigned_by=a.id
+      ORDER BY t.created_at DESC
+    `);
+
+    res.json(rows);
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to fetch tasks" });
+    res.status(500).json({
+      message: "Unable to fetch tasks"
+    });
   }
 };
 
-exports.createTask = async (req, res) => {
-  try {
-    const {
+// Create Task
+exports.createTask = async (req,res)=>{
+
+  try{
+
+    const{
       title,
       description,
-      status,
-      priority,
+      project_name,
       assigned_to,
-      created_by,
+      assigned_by,
+      priority,
       due_date,
-    } = req.body;
+      estimated_hours
+    }=req.body;
 
-    const [result] = await pool.query(
-      `INSERT INTO tasks
-      (title, description, status, priority, assigned_to, created_by, due_date)
-      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [
-        title,
-        description,
-        status || "To Do",
-        priority || "Medium",
-        assigned_to || null,
-        created_by || null,
-        due_date || null,
-      ]
-    );
+    await db.query(`
+      INSERT INTO tasks
+      (
+      title,
+      description,
+      project_name,
+      assigned_to,
+      assigned_by,
+      priority,
+      due_date,
+      estimated_hours
+      )
+
+      VALUES
+      (?,?,?,?,?,?,?,?)
+    `,
+
+    [
+      title,
+      description,
+      project_name,
+      assigned_to,
+      assigned_by,
+      priority,
+      due_date,
+      estimated_hours
+    ]);
 
     res.json({
-      success: true,
-      id: result.insertId,
+      success:true,
+      message:"Task Created Successfully"
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to create task" });
+
   }
-};
 
-exports.updateTask = async (req, res) => {
-  try {
-    const { id } = req.params;
+  catch(err){
 
-    await pool.query(
-      `UPDATE tasks
-       SET title=?,
-           description=?,
-           status=?,
-           priority=?,
-           assigned_to=?,
-           due_date=?
-       WHERE id=?`,
-      [
-        req.body.title,
-        req.body.description,
-        req.body.status,
-        req.body.priority,
-        req.body.assigned_to,
-        req.body.due_date,
-        id,
-      ]
-    );
-
-    res.json({ success: true });
-  } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to update task" });
-  }
-};
 
-exports.deleteTask = async (req, res) => {
-  try {
-    await pool.query(
-      "DELETE FROM tasks WHERE id=?",
-      [req.params.id]
-    );
+    res.status(500).json({
+      message:"Unable to create task"
+    });
 
-    res.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to delete task" });
   }
+
 };
