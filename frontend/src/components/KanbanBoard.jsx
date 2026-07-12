@@ -10,37 +10,51 @@ export default function KanbanBoard({ tasks }) {
   };
 
   tasks.forEach((task) => {
-    if (columns[task.status]) {
-      columns[task.status].push(task);
+    const status = task.status || "To Do";
+
+    if (columns[status]) {
+      columns[status].push(task);
     } else {
       columns["To Do"].push(task);
     }
   });
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+  const colors = {
+    "To Do": "border-blue-500",
+    "In Progress": "border-yellow-500",
+    "Review": "border-purple-500",
+    "Done": "border-green-500"
+  };
 
-      {Object.keys(columns).map((status) => (
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+      {Object.entries(columns).map(([status, taskList]) => (
 
         <div
           key={status}
-          className="bg-slate-100 rounded-xl p-4 min-h-[500px]"
+          className={`bg-slate-100 rounded-xl shadow-lg border-t-4 ${colors[status]} p-4 min-h-[550px]`}
         >
 
-          <h2 className="font-bold text-lg mb-4">
-            {status}
-          </h2>
+          <div className="flex justify-between items-center mb-4">
 
-          {columns[status].length === 0 ? (
-            <p className="text-gray-400 text-sm">
+            <h2 className="font-bold text-lg">
+              {status}
+            </h2>
+
+            <span className="bg-slate-700 text-white text-xs rounded-full px-3 py-1">
+              {taskList.length}
+            </span>
+
+          </div>
+
+          {taskList.length === 0 ? (
+            <div className="text-center text-gray-400 mt-10">
               No Tasks
-            </p>
+            </div>
           ) : (
-            columns[status].map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-              />
+            taskList.map((task) => (
+              <TaskCard key={task.id} task={task} />
             ))
           )}
 
