@@ -30,5 +30,28 @@ async function testConnection() {
 }
 
 testConnection();
+async function createTasksTable() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS tasks (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        status ENUM('To Do','In Progress','Done') DEFAULT 'To Do',
+        priority ENUM('Low','Medium','High') DEFAULT 'Medium',
+        assigned_to INT,
+        created_by INT,
+        due_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
+    console.log("✅ Tasks table is ready");
+  } catch (err) {
+    console.error("❌ Failed to create tasks table:", err);
+  }
+}
+
+createTasksTable();
 module.exports = pool;
