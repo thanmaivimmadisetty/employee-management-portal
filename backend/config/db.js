@@ -33,6 +33,8 @@ testConnection();
 
 async function createTasksTable() {
   try {
+
+    // Create table if it doesn't exist
     await pool.query(`
       CREATE TABLE IF NOT EXISTS tasks (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,21 +46,37 @@ async function createTasksTable() {
         priority ENUM('Low','Medium','High','Critical') DEFAULT 'Medium',
         status ENUM('To Do','In Progress','Review','Done') DEFAULT 'To Do',
         due_date DATE,
-        start_date DATE,
-        completed_date DATE,
-        estimated_hours INT,
-        actual_hours INT,
+        estimated_hours INT DEFAULT 0,
+        actual_hours INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-        FOREIGN KEY (assigned_to) REFERENCES employees(id),
-        FOREIGN KEY (assigned_by) REFERENCES employees(id)
-      );
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
     `);
 
+    // Add missing columns if the table already exists
+    const alterQueries = [
+      "ALTER TABLE tasks ADD COLUMN project_name VARCHAR(150)",
+      "ALTER TABLE tasks ADD COLUMN assigned_to INT",
+      "ALTER TABLE tasks ADD COLUMN assigned_by INT",
+      "ALTER TABLE tasks ADD COLUMN priority ENUM('Low','Medium','High','Critical') DEFAULT 'Medium'",
+      "ALTER TABLE tasks ADD COLUMN status ENUM('To Do','In Progress','Review','Done') DEFAULT 'To Do'",
+      "ALTER TABLE tasks ADD COLUMN due_date DATE",
+      "ALTER TABLE tasks ADD COLUMN estimated_hours INT DEFAULT 0",
+      "ALTER TABLE tasks ADD COLUMN actual_hours INT DEFAULT 0"
+    ];
+
+    for (const query of alterQueries) {
+      try {
+        await pool.query(query);
+      } catch (err) {
+        // Ignore "Duplicate column" errors
+      }
+    }
+
     console.log("✅ Tasks table is ready");
+
   } catch (err) {
-    console.error("❌ Failed to create tasks table:", err);
+    console.error("❌ Error creating tasks table:", err);
   }
 }
 
