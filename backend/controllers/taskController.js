@@ -144,3 +144,9 @@ exports.deleteTask = async (req, res) => {
       message: "Task Deleted Successfully"
     });
   } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Unable to delete task"
+    });
+  }
+};
