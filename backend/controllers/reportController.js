@@ -26,7 +26,7 @@ console.log(tables);
     stats.totalDepartments = deptCount[0].count;
 
     // Open jobs
-    const [jobCount] = await db.query("SELECT COUNT(*) as count FROM recruitment_jobs WHERE status = 'Open");
+    const [jobCount] = await db.query("SELECT COUNT(*) as count FROM recruitment_jobs WHERE status = 'Open'");
     stats.openJobs = jobCount[0].count;
 
     // Pending leaves
