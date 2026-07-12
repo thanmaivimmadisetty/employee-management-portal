@@ -18,6 +18,7 @@ import Reports from './pages/Reports';
 import EmployeeOnboarding from './pages/EmployeeOnboarding';
 import OnboardingRequests from './pages/OnboardingRequests';
 import Tracker from './pages/Tracker';
+import Tasks from "./pages/Tasks";
 import TrackerDashboard from "./pages/TrackerDashboard";
 function App() {
   return (
@@ -73,7 +74,9 @@ function App() {
           <Route element={<Layout title="Performance Reviews" />}>
             <Route path="/performance" element={<Performance />} />
           </Route>
-
+<Route element={<Layout title="Task Management" />}>
+  <Route path="/tasks" element={<Tasks />} />
+</Route>
           {/* Holidays */}
           <Route element={<Layout title="Holiday Calendar" />}>
             <Route path="/holidays" element={<Holidays />} />
