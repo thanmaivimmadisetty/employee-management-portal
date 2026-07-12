@@ -15,7 +15,8 @@ import {
   LogOut,
   FileText,
   ClipboardList,
-  Activity
+  Activity,
+  CheckSquare
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -27,40 +28,95 @@ const Sidebar = () => {
   const role = user.roleName;
 
   const menuItems = [
-    { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['Admin', 'HR', 'Manager', 'Employee'] },
-    { name: 'Employees', path: '/employees', icon: Users, roles: ['Admin', 'HR', 'Manager'] },
-    { name: 'Departments', path: '/departments', icon: Building2, roles: ['Admin', 'HR'] },
-    { name: 'Attendance', path: '/attendance', icon: CalendarCheck, roles: ['Admin', 'HR', 'Manager', 'Employee'] },
-    { name: 'Leaves', path: '/leaves', icon: CalendarOff, roles: ['Admin', 'HR', 'Manager', 'Employee'] },
-    { name: 'Payroll', path: '/payroll', icon: DollarSign, roles: ['Admin', 'HR', 'Employee'] },
-    { name: 'Recruitment', path: '/recruitment', icon: Briefcase, roles: ['Admin', 'HR'] },
-
-    // HR/Admin Onboarding Requests Page
+    {
+      name: 'Dashboard',
+      path: '/',
+      icon: LayoutDashboard,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    },
+    {
+      name: 'Employees',
+      path: '/employees',
+      icon: Users,
+      roles: ['Admin', 'HR', 'Manager']
+    },
+    {
+      name: 'Departments',
+      path: '/departments',
+      icon: Building2,
+      roles: ['Admin', 'HR']
+    },
+    {
+      name: 'Attendance',
+      path: '/attendance',
+      icon: CalendarCheck,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    },
+    {
+      name: 'Leaves',
+      path: '/leaves',
+      icon: CalendarOff,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    },
+    {
+      name: 'Payroll',
+      path: '/payroll',
+      icon: DollarSign,
+      roles: ['Admin', 'HR', 'Employee']
+    },
+    {
+      name: 'Recruitment',
+      path: '/recruitment',
+      icon: Briefcase,
+      roles: ['Admin', 'HR']
+    },
     {
       name: 'Employee Onboarding',
       path: '/onboarding-requests',
       icon: FileText,
       roles: ['Admin', 'HR']
     },
-
-    { name: 'Performance', path: '/performance', icon: TrendingUp, roles: ['Admin', 'HR', 'Manager', 'Employee'] },
-    { name: 'Holidays', path: '/holidays', icon: Palmtree, roles: ['Admin', 'HR', 'Manager', 'Employee'] },
-    { name: 'Reports', path: '/reports', icon: BarChart3, roles: ['Admin', 'HR'] },
     {
-  name: 'Tracker',
-  path: '/tracker',
-  icon: ClipboardList,
-  roles: ['Admin', 'HR', 'Manager', 'Employee']
-},
-{
-  name: "Tracker Dashboard",
-  path: "/tracker-dashboard",
-  icon: Activity,
-  roles: ["Admin", "HR"]
-}
+      name: 'Performance',
+      path: '/performance',
+      icon: TrendingUp,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    },
+    {
+      name: 'Holidays',
+      path: '/holidays',
+      icon: Palmtree,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    },
+    {
+      name: 'Reports',
+      path: '/reports',
+      icon: BarChart3,
+      roles: ['Admin', 'HR']
+    },
+    {
+      name: 'Tracker',
+      path: '/tracker',
+      icon: ClipboardList,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    },
+    {
+      name: 'Tracker Dashboard',
+      path: '/tracker-dashboard',
+      icon: Activity,
+      roles: ['Admin', 'HR']
+    },
+    {
+      name: 'Tasks',
+      path: '/tasks',
+      icon: CheckSquare,
+      roles: ['Admin', 'HR', 'Manager', 'Employee']
+    }
   ];
 
-  const allowedMenuItems = menuItems.filter(item => item.roles.includes(role));
+  const allowedMenuItems = menuItems.filter(item =>
+    item.roles.includes(role)
+  );
 
   return (
     <aside className="w-64 glass-panel border-r border-slate-800 flex flex-col h-full z-20">
