@@ -6,18 +6,15 @@ exports.getTasks = async (req, res) => {
     const [rows] = await db.query(`
       SELECT
         t.*,
-        CONCAT(e.first_name,' ',e.last_name) AS employeeName,
-        CONCAT(a.first_name,' ',a.last_name) AS assignedBy
+        CONCAT(e.first_name, ' ', e.last_name) AS employeeName,
+        CONCAT(a.first_name, ' ', a.last_name) AS assignedBy
       FROM tasks t
-      LEFT JOIN employees e
-        ON t.assigned_to=e.id
-      LEFT JOIN employees a
-        ON t.assigned_by=a.id
+      LEFT JOIN employees e ON t.assigned_to = e.id
+      LEFT JOIN employees a ON t.assigned_by = a.id
       ORDER BY t.created_at DESC
     `);
 
     res.json(rows);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -27,11 +24,9 @@ exports.getTasks = async (req, res) => {
 };
 
 // Create Task
-exports.createTask = async (req,res)=>{
-
-  try{
-
-    const{
+exports.createTask = async (req, res) => {
+  try {
+    const {
       title,
       description,
       project_name,
@@ -40,56 +35,50 @@ exports.createTask = async (req,res)=>{
       priority,
       due_date,
       estimated_hours
-    }=req.body;
+    } = req.body;
 
-    await db.query(`
+    await db.query(
+      `
       INSERT INTO tasks
       (
-      title,
-      description,
-      project_name,
-      assigned_to,
-      assigned_by,
-      priority,
-      due_date,
-      estimated_hours
+        title,
+        description,
+        project_name,
+        assigned_to,
+        assigned_by,
+        priority,
+        due_date,
+        estimated_hours
       )
-
-      VALUES
-      (?,?,?,?,?,?,?,?)
-    `,
-
-    [
-      title,
-      description,
-      project_name,
-      assigned_to,
-      assigned_by,
-      priority,
-      due_date,
-      estimated_hours
-    ]);
+      VALUES (?,?,?,?,?,?,?,?)
+      `,
+      [
+        title,
+        description,
+        project_name,
+        assigned_to,
+        assigned_by,
+        priority,
+        due_date,
+        estimated_hours
+      ]
+    );
 
     res.json({
-      success:true,
-      message:"Task Created Successfully"
+      success: true,
+      message: "Task Created Successfully"
     });
-
-  }
-
-  catch(err){
-
+  } catch (err) {
     console.error(err);
-
     res.status(500).json({
-      message:"Unable to create task"
+      message: "Unable to create task"
     });
-
   }
-  // Update Task
+};
+
+// Update Task
 exports.updateTask = async (req, res) => {
   try {
-
     const { id } = req.params;
 
     const {
@@ -100,78 +89,58 @@ exports.updateTask = async (req, res) => {
       priority,
       status,
       due_date,
-     estimated_hours,
+      estimated_hours,
       actual_hours
     } = req.body;
 
-    await db.query(`
+    await db.query(
+      `
       UPDATE tasks
       SET
-      title=?,
-      description=?,
-      project_name=?,
-      assigned_to=?,
-      priority=?,
-      status=?,
-      due_date=?,
-      estimated_hours=?,
-      actual_hours=?
+        title=?,
+        description=?,
+        project_name=?,
+        assigned_to=?,
+        priority=?,
+        status=?,
+        due_date=?,
+        estimated_hours=?,
+        actual_hours=?
       WHERE id=?
-    `,
-    [
-      title,
-      description,
-      project_name,
-      assigned_to,
-      priority,
-      status,
-      due_date,
-      estimated_hours,
-      actual_hours,
-      id
-    ]);
+      `,
+      [
+        title,
+        description,
+        project_name,
+        assigned_to,
+        priority,
+        status,
+        due_date,
+        estimated_hours,
+        actual_hours,
+        id
+      ]
+    );
 
     res.json({
-      success:true,
-      message:"Task Updated"
+      success: true,
+      message: "Task Updated"
     });
-
-  }
-  catch(err){
-
+  } catch (err) {
     console.error(err);
-
     res.status(500).json({
-      message:"Unable to update task"
+      message: "Unable to update task"
     });
-
   }
 };
-  exports.deleteTask = async(req,res)=>{
 
-try{
+// Delete Task
+exports.deleteTask = async (req, res) => {
+  try {
+    await db.query("DELETE FROM tasks WHERE id = ?", [req.params.id]);
 
-await db.query(
-"DELETE FROM tasks WHERE id=?",
-[req.params.id]
-);
-
-res.json({
-success:true
-});
-
-}
-
-catch(err){
-
-console.error(err);
-
-res.status(500).json({
-message:"Unable to delete task"
-});
-
-}
-
-};
-
-};
+    res.json({
+      success: true,
+      message: "Task Deleted Successfully"
+    });
+  } catch (err) {
