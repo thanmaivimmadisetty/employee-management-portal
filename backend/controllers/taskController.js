@@ -86,5 +86,92 @@ exports.createTask = async (req,res)=>{
     });
 
   }
+  // Update Task
+exports.updateTask = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const {
+      title,
+      description,
+      project_name,
+      assigned_to,
+      priority,
+      status,
+      due_date,
+     estimated_hours,
+      actual_hours
+    } = req.body;
+
+    await db.query(`
+      UPDATE tasks
+      SET
+      title=?,
+      description=?,
+      project_name=?,
+      assigned_to=?,
+      priority=?,
+      status=?,
+      due_date=?,
+      estimated_hours=?,
+      actual_hours=?
+      WHERE id=?
+    `,
+    [
+      title,
+      description,
+      project_name,
+      assigned_to,
+      priority,
+      status,
+      due_date,
+      estimated_hours,
+      actual_hours,
+      id
+    ]);
+
+    res.json({
+      success:true,
+      message:"Task Updated"
+    });
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    res.status(500).json({
+      message:"Unable to update task"
+    });
+
+  }
+};
+  exports.deleteTask = async(req,res)=>{
+
+try{
+
+await db.query(
+"DELETE FROM tasks WHERE id=?",
+[req.params.id]
+);
+
+res.json({
+success:true
+});
+
+}
+
+catch(err){
+
+console.error(err);
+
+res.status(500).json({
+message:"Unable to delete task"
+});
+
+}
+
+};
 
 };
