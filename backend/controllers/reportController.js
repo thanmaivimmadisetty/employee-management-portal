@@ -3,6 +3,8 @@ const db = require('../config/db');
 exports.getDashboardStats = async (req, res) => {
   const today = new Date().toISOString().split('T')[0];
   try {
+    const [tables] = await db.query("SHOW TABLES");
+console.log(tables);
     // 1. Core KPIs (Depending on DB being connected)
     let stats = {
       totalEmployees: 0,
