@@ -34,18 +34,25 @@ async function createTasksTable() {
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS tasks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        description TEXT,
-        status ENUM('To Do','In Progress','Done') DEFAULT 'To Do',
-        priority ENUM('Low','Medium','High') DEFAULT 'Medium',
-        assigned_to INT,
-        created_by INT,
-        due_date DATE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    project_name VARCHAR(150),
+    assigned_to INT,
+    assigned_by INT,
+    priority ENUM('Low','Medium','High','Critical') DEFAULT 'Medium',
+    status ENUM('To Do','In Progress','Review','Done') DEFAULT 'To Do',
+    due_date DATE,
+    start_date DATE,
+    completed_date DATE,
+    estimated_hours INT,
+    actual_hours INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (assigned_to) REFERENCES employees(id),
+    FOREIGN KEY (assigned_by) REFERENCES employees(id)
+);
 
     console.log("✅ Tasks table is ready");
   } catch (err) {
