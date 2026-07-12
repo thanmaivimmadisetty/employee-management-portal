@@ -7,6 +7,7 @@ const API =
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   const [form, setForm] = useState({
     title: "",
@@ -21,6 +22,7 @@ export default function Tasks() {
 
   useEffect(() => {
     loadTasks();
+    loadEmployees();
   }, []);
 
   const loadTasks = async () => {
@@ -30,6 +32,22 @@ export default function Tasks() {
     } catch (err) {
       console.error(err);
       alert("Unable to load tasks");
+    }
+  };
+
+  const loadEmployees = async () => {
+    try {
+      const token = localStorage.getItem("emp_portal_token");
+
+      const res = await axios.get(`${API}/api/employees`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      setEmployees(res.data);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -83,9 +101,9 @@ export default function Tasks() {
       <div
         style={{
           border: "1px solid #ccc",
-          padding: 15,
-          marginBottom: 25,
-          borderRadius: 8
+          padding: 20,
+          borderRadius: 10,
+          marginBottom: 30
         }}
       >
         <h3>Create Task</h3>
@@ -96,8 +114,7 @@ export default function Tasks() {
           value={form.title}
           onChange={handleChange}
         />
-        <br />
-        <br />
+        <br /><br />
 
         <textarea
           name="description"
@@ -105,8 +122,7 @@ export default function Tasks() {
           value={form.description}
           onChange={handleChange}
         />
-        <br />
-        <br />
+        <br /><br />
 
         <input
           name="project_name"
@@ -114,26 +130,23 @@ export default function Tasks() {
           value={form.project_name}
           onChange={handleChange}
         />
-        <br />
-        <br />
+        <br /><br />
 
-        <input
+        <select
           name="assigned_to"
-          placeholder="Assigned To Employee ID"
           value={form.assigned_to}
           onChange={handleChange}
-        />
-        <br />
-        <br />
+        >
+          <option value="">Assign Employee</option>
 
-        <input
-          name="assigned_by"
-          placeholder="Assigned By Employee ID"
-          value={form.assigned_by}
-          onChange={handleChange}
-        />
-        <br />
-        <br />
+          {employees.map((emp) => (
+            <option key={emp.id} value={emp.id}>
+              {emp.firstName} {emp.lastName}
+            </option>
+          ))}
+        </select>
+
+        <br /><br />
 
         <select
           name="priority"
@@ -146,8 +159,7 @@ export default function Tasks() {
           <option>Critical</option>
         </select>
 
-        <br />
-        <br />
+        <br /><br />
 
         <input
           type="date"
@@ -156,8 +168,7 @@ export default function Tasks() {
           onChange={handleChange}
         />
 
-        <br />
-        <br />
+        <br /><br />
 
         <input
           type="number"
@@ -167,10 +178,11 @@ export default function Tasks() {
           onChange={handleChange}
         />
 
-        <br />
-        <br />
+        <br /><br />
 
-        <button onClick={createTask}>Create Task</button>
+        <button onClick={createTask}>
+          Create Task
+        </button>
       </div>
 
       <h3>Task List</h3>
@@ -185,8 +197,8 @@ export default function Tasks() {
               <th>Project</th>
               <th>Priority</th>
               <th>Status</th>
-              <th>Employee</th>
-              <th>Actions</th>
+              <th>Assigned To</th>
+              <th>Action</th>
             </tr>
           </thead>
 
