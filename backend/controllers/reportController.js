@@ -18,19 +18,19 @@ console.log(tables);
     };
 
     // Total employees count
-    const [empCount] = await db.query('SELECT COUNT(*) as count FROM employees WHERE status = "Active"');
+    const [empCount] = await db.query("SELECT COUNT(*) as count FROM employees WHERE status = 'Active'");
     stats.totalEmployees = empCount[0].count;
 
     // Total departments count
-    const [deptCount] = await db.query('SELECT COUNT(*) as count FROM departments');
+    const [deptCount] = await db.query("SELECT COUNT(*) as count FROM departments");
     stats.totalDepartments = deptCount[0].count;
 
     // Open jobs
-    const [jobCount] = await db.query('SELECT COUNT(*) as count FROM recruitment_jobs WHERE status = "Open"');
+    const [jobCount] = await db.query("SELECT COUNT(*) as count FROM recruitment_jobs WHERE status = 'Open");
     stats.openJobs = jobCount[0].count;
 
     // Pending leaves
-    const [leaveCount] = await db.query('SELECT COUNT(*) as count FROM leaves WHERE status = "Pending"');
+    const [leaveCount] = await db.query("SELECT COUNT(*) as count FROM leaves WHERE status = 'Pending'");
     stats.pendingLeaves = leaveCount[0].count;
 
     // Today's attendance rate
