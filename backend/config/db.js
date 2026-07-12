@@ -63,5 +63,19 @@ async function createTasksTable() {
 }
 
 createTasksTable();
+async function updateTasksTable() {
+  try {
+    await pool.query(`
+      ALTER TABLE tasks
+      ADD COLUMN project_name VARCHAR(150);
+    `);
+
+    console.log("✅ project_name column added");
+  } catch (err) {
+    console.log("Column already exists or another error:", err.message);
+  }
+}
+
+updateTasksTable();
 
 module.exports = pool;
