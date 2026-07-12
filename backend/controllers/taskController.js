@@ -4,25 +4,20 @@ const db = require("../config/db");
 exports.getTasks = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT
-        t.*,
-        CONCAT(e.first_name, ' ', e.last_name) AS employeeName,
-        CONCAT(a.first_name, ' ', a.last_name) AS assignedBy
-      FROM tasks t
-      LEFT JOIN employees e ON t.assigned_to = e.id
-      LEFT JOIN employees a ON t.assigned_by = a.id
-      ORDER BY t.created_at DESC
+      SELECT *
+      FROM tasks
+      ORDER BY created_at DESC
     `);
 
-    res.json(rows);
+    res.status(200).json(rows);
   } catch (err) {
-  console.error("TASK ERROR:", err);
-
-  res.status(500).json({
-    message: "Unable to fetch tasks",
-    error: err.message
-  });
-}
+    console.error("GET TASKS ERROR:", err);
+    res.status(500).json({
+      message: "Unable to fetch tasks",
+      error: err.message
+    });
+  }
+};
 
 // Create Task
 exports.createTask = async (req, res) => {
@@ -38,9 +33,8 @@ exports.createTask = async (req, res) => {
       estimated_hours
     } = req.body;
 
-    await db.query(
-      `
-      INSERT INTO tasks
+    const [result] = await db.query(
+      `INSERT INTO tasks
       (
         title,
         description,
@@ -51,28 +45,29 @@ exports.createTask = async (req, res) => {
         due_date,
         estimated_hours
       )
-      VALUES (?,?,?,?,?,?,?,?)
-      `,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
         description,
         project_name,
-        assigned_to,
-        assigned_by,
-        priority,
-        due_date,
-        estimated_hours
+        assigned_to || null,
+        assigned_by || null,
+        priority || "Medium",
+        due_date || null,
+        estimated_hours || 0
       ]
     );
 
-    res.json({
+    res.status(201).json({
       success: true,
-      message: "Task Created Successfully"
+      id: result.insertId,
+      message: "Task created successfully"
     });
   } catch (err) {
-    console.error(err);
+    console.error("CREATE TASK ERROR:", err);
     res.status(500).json({
-      message: "Unable to create task"
+      message: "Unable to create task",
+      error: err.message
     });
   }
 };
@@ -95,9 +90,8 @@ exports.updateTask = async (req, res) => {
     } = req.body;
 
     await db.query(
-      `
-      UPDATE tasks
-      SET
+      `UPDATE tasks
+       SET
         title=?,
         description=?,
         project_name=?,
@@ -107,8 +101,7 @@ exports.updateTask = async (req, res) => {
         due_date=?,
         estimated_hours=?,
         actual_hours=?
-      WHERE id=?
-      `,
+       WHERE id=?`,
       [
         title,
         description,
@@ -125,12 +118,13 @@ exports.updateTask = async (req, res) => {
 
     res.json({
       success: true,
-      message: "Task Updated"
+      message: "Task updated successfully"
     });
   } catch (err) {
-    console.error(err);
+    console.error("UPDATE TASK ERROR:", err);
     res.status(500).json({
-      message: "Unable to update task"
+      message: "Unable to update task",
+      error: err.message
     });
   }
 };
@@ -138,16 +132,20 @@ exports.updateTask = async (req, res) => {
 // Delete Task
 exports.deleteTask = async (req, res) => {
   try {
-    await db.query("DELETE FROM tasks WHERE id = ?", [req.params.id]);
+    await db.query(
+      "DELETE FROM tasks WHERE id=?",
+      [req.params.id]
+    );
 
     res.json({
       success: true,
-      message: "Task Deleted Successfully"
+      message: "Task deleted successfully"
     });
   } catch (err) {
-    console.error(err);
+    console.error("DELETE TASK ERROR:", err);
     res.status(500).json({
-      message: "Unable to delete task"
+      message: "Unable to delete task",
+      error: err.message
     });
   }
 };
