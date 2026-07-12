@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import KanbanBoard from "../components/KanbanBoard";
 
 const API =
   import.meta.env.VITE_API_URL ||
@@ -31,7 +32,6 @@ export default function Tasks() {
       setTasks(res.data);
     } catch (err) {
       console.error(err);
-      alert("Unable to load tasks");
     }
   };
 
@@ -82,144 +82,102 @@ export default function Tasks() {
     }
   };
 
-  const deleteTask = async (id) => {
-    if (!window.confirm("Delete this task?")) return;
-
-    try {
-      await axios.delete(`${API}/api/tasks/${id}`);
-      loadTasks();
-    } catch (err) {
-      console.error(err);
-      alert("Unable to delete task");
-    }
-  };
-
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Task Management</h2>
+    <div className="p-6">
 
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: 20,
-          borderRadius: 10,
-          marginBottom: 30
-        }}
-      >
-        <h3>Create Task</h3>
+      <h1 className="text-3xl font-bold mb-6">
+        Jira Task Manager
+      </h1>
 
-        <input
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={handleChange}
-        />
-        <br /><br />
+      <div className="bg-white rounded-xl shadow p-6 mb-8">
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-        />
-        <br /><br />
+        <h2 className="text-xl font-semibold mb-4">
+          Create Task
+        </h2>
 
-        <input
-          name="project_name"
-          placeholder="Project Name"
-          value={form.project_name}
-          onChange={handleChange}
-        />
-        <br /><br />
+        <div className="grid grid-cols-2 gap-4">
 
-        <select
-          name="assigned_to"
-          value={form.assigned_to}
-          onChange={handleChange}
+          <input
+            className="border rounded-lg p-2"
+            name="title"
+            placeholder="Task Title"
+            value={form.title}
+            onChange={handleChange}
+          />
+
+          <input
+            className="border rounded-lg p-2"
+            name="project_name"
+            placeholder="Project Name"
+            value={form.project_name}
+            onChange={handleChange}
+          />
+
+          <textarea
+            className="border rounded-lg p-2 col-span-2"
+            name="description"
+            placeholder="Description"
+            value={form.description}
+            onChange={handleChange}
+          />
+
+          <select
+            className="border rounded-lg p-2"
+            name="assigned_to"
+            value={form.assigned_to}
+            onChange={handleChange}
+          >
+            <option value="">Assign Employee</option>
+
+            {employees.map((emp) => (
+              <option key={emp.id} value={emp.id}>
+                {emp.firstName} {emp.lastName}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="border rounded-lg p-2"
+            name="priority"
+            value={form.priority}
+            onChange={handleChange}
+          >
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            <option>Critical</option>
+          </select>
+
+          <input
+            className="border rounded-lg p-2"
+            type="date"
+            name="due_date"
+            value={form.due_date}
+            onChange={handleChange}
+          />
+
+          <input
+            className="border rounded-lg p-2"
+            type="number"
+            name="estimated_hours"
+            placeholder="Estimated Hours"
+            value={form.estimated_hours}
+            onChange={handleChange}
+          />
+
+        </div>
+
+        <button
+          onClick={createTask}
+          className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
         >
-          <option value="">Assign Employee</option>
-
-          {employees.map((emp) => (
-            <option key={emp.id} value={emp.id}>
-              {emp.firstName} {emp.lastName}
-            </option>
-          ))}
-        </select>
-
-        <br /><br />
-
-        <select
-          name="priority"
-          value={form.priority}
-          onChange={handleChange}
-        >
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-          <option>Critical</option>
-        </select>
-
-        <br /><br />
-
-        <input
-          type="date"
-          name="due_date"
-          value={form.due_date}
-          onChange={handleChange}
-        />
-
-        <br /><br />
-
-        <input
-          type="number"
-          name="estimated_hours"
-          placeholder="Estimated Hours"
-          value={form.estimated_hours}
-          onChange={handleChange}
-        />
-
-        <br /><br />
-
-        <button onClick={createTask}>
           Create Task
         </button>
+
       </div>
 
-      <h3>Task List</h3>
+      <KanbanBoard tasks={tasks} />
 
-      {tasks.length === 0 ? (
-        <p>No Tasks Found</p>
-      ) : (
-        <table border="1" cellPadding="10" width="100%">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Project</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Assigned To</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.id}>
-                <td>{task.title}</td>
-                <td>{task.project_name}</td>
-                <td>{task.priority}</td>
-                <td>{task.status}</td>
-                <td>{task.employeeName}</td>
-                <td>
-                  <button onClick={() => deleteTask(task.id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </div>
   );
 }
