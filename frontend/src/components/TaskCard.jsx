@@ -1,36 +1,50 @@
 import React from "react";
 
 export default function TaskCard({ task }) {
+
   const priorityColor = {
-    Low: "bg-green-100 text-green-700",
-    Medium: "bg-yellow-100 text-yellow-700",
-    High: "bg-orange-100 text-orange-700",
-    Critical: "bg-red-100 text-red-700"
+    Low: "bg-green-500",
+    Medium: "bg-blue-500",
+    High: "bg-orange-500",
+    Critical: "bg-red-600"
   };
 
   return (
-    <div className="bg-white rounded-xl shadow border p-4 mb-3 hover:shadow-lg transition">
+    <div className="bg-white rounded-xl shadow-md p-4 mb-4 border">
 
-      <h3 className="font-bold text-gray-800">
+      <h3 className="font-bold text-lg">
         {task.title}
       </h3>
 
-      <p className="text-sm text-gray-500 mt-1">
-        {task.project_name}
+      <p className="text-gray-600 text-sm mt-2">
+        {task.description}
       </p>
 
-      <div className="mt-3 flex justify-between items-center">
+      <div className="mt-4 space-y-2">
+
+        <p>
+          <strong>👤 Employee:</strong>{" "}
+          {task.employeeName || "Unassigned"}
+        </p>
+
+        <p>
+          <strong>📁 Project:</strong>{" "}
+          {task.project_name}
+        </p>
+
+        <p>
+          <strong>📅 Due:</strong>{" "}
+          {task.due_date
+            ? new Date(task.due_date).toLocaleDateString()
+            : "No Due Date"}
+        </p>
 
         <span
-          className={`px-2 py-1 rounded text-xs font-bold ${
+          className={`text-white px-3 py-1 rounded-full text-xs ${
             priorityColor[task.priority]
           }`}
         >
           {task.priority}
-        </span>
-
-        <span className="text-xs text-gray-400">
-          {task.employeeName}
         </span>
 
       </div>
