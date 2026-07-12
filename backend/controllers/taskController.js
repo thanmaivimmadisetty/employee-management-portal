@@ -16,12 +16,13 @@ exports.getTasks = async (req, res) => {
 
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      message: "Unable to fetch tasks"
-    });
-  }
-};
+  console.error("TASK ERROR:", err);
+
+  res.status(500).json({
+    message: "Unable to fetch tasks",
+    error: err.message
+  });
+}
 
 // Create Task
 exports.createTask = async (req, res) => {
