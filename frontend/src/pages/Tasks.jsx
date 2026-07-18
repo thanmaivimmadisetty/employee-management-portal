@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import KanbanBoard from "../components/KanbanBoard";
+import TaskTable from "../components/TaskTable";
 
 const API =
   import.meta.env.VITE_API_URL ||
@@ -192,7 +192,7 @@ export default function Tasks() {
         />
       </div>
 
-      <KanbanBoard tasks={filteredTasks} />
+      <TaskTable tasks={filteredTasks} />
 
     </div>
   );
