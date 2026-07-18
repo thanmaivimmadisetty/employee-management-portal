@@ -92,7 +92,7 @@ export default function Tasks() {
     <div className="p-6">
 
       <h1 className="text-3xl font-bold mb-6">
-        Jira Task Manager
+        ZLT Task Manager
       </h1>
 
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
