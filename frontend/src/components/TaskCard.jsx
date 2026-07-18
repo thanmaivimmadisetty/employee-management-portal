@@ -2,46 +2,55 @@ import React from "react";
 
 export default function TaskCard({ task }) {
 
-  const priorityColor = {
+  const priorityColors = {
     Low: "bg-green-500",
-    Medium: "bg-blue-500",
+    Medium: "bg-yellow-500",
     High: "bg-orange-500",
-    Critical: "bg-red-600"
+    Critical: "bg-red-600",
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 mb-4 border">
+    <div className="bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200 hover:shadow-lg transition">
 
-      <h3 className="font-bold text-lg">
+      {/* Task Title */}
+      <h3 className="text-lg font-bold text-gray-800">
         {task.title}
       </h3>
 
-      <p className="text-gray-600 text-sm mt-2">
+      {/* Project */}
+      <p className="text-sm text-gray-500 mt-1">
+        📁 {task.project_name}
+      </p>
+
+      {/* Description */}
+      <p className="text-sm text-gray-700 mt-3">
         {task.description}
       </p>
 
-      <div className="mt-4 space-y-2">
+      {/* Assigned Employee */}
+      <div className="mt-4">
+        <span className="font-semibold">
+          👤 Assigned To :
+        </span>{" "}
+        {task.employeeName || "Unassigned"}
+      </div>
 
-        <p>
-          <strong>👤 Employee:</strong>{" "}
-          {task.employeeName || "Unassigned"}
-        </p>
+      {/* Due Date */}
+      <div className="mt-2">
+        <span className="font-semibold">
+          📅 Due Date :
+        </span>{" "}
+        {task.due_date
+          ? new Date(task.due_date).toLocaleDateString()
+          : "Not Set"}
+      </div>
 
-        <p>
-          <strong>📁 Project:</strong>{" "}
-          {task.project_name}
-        </p>
-
-        <p>
-          <strong>📅 Due:</strong>{" "}
-          {task.due_date
-            ? new Date(task.due_date).toLocaleDateString()
-            : "No Due Date"}
-        </p>
+      {/* Priority */}
+      <div className="mt-4">
 
         <span
-          className={`text-white px-3 py-1 rounded-full text-xs ${
-            priorityColor[task.priority]
+          className={`text-white text-xs px-3 py-1 rounded-full ${
+            priorityColors[task.priority]
           }`}
         >
           {task.priority}
