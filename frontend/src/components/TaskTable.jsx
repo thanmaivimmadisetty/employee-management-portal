@@ -109,13 +109,18 @@ export default function TaskTable({ tasks }) {
 
                 <td className="px-5 py-4">
 
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${priorityColor(task.priority)}`}
-                  >
-                    {task.priority}
-                  </span>
+  <select
+    value={task.status || "To Do"}
+    onChange={(e) => updateStatus(task.id, e.target.value)}
+    className="border border-cyan-300 rounded-lg px-3 py-2"
+  >
+    <option value="To Do">To Do</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Review">Review</option>
+    <option value="Done">Done</option>
+  </select>
 
-                </td>
+</td>
 
                 <td className="px-5 py-4">
 
