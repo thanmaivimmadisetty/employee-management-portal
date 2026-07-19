@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "axios";
+
 const API =
   import.meta.env.VITE_API_URL ||
   "https://employee-management-portal-2.onrender.com";
+
 export default function TaskTable({ tasks }) {
 
   const priorityColor = (priority) => {
@@ -20,18 +22,16 @@ export default function TaskTable({ tasks }) {
     }
   };
 
-  const statusColor = (status) => {
-    switch (status) {
-      case "Done":
-        return "bg-green-100 text-green-700";
-      case "Review":
-        return "bg-yellow-100 text-yellow-700";
-      case "In Progress":
-        return "bg-blue-100 text-blue-700";
-      case "To Do":
-        return "bg-orange-100 text-orange-700";
-      default:
-        return "bg-gray-100 text-gray-700";
+  const updateStatus = async (id, status) => {
+    try {
+      await axios.put(`${API}/api/tasks/${id}`, {
+        status,
+      });
+
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert("Unable to update status");
     }
   };
 
@@ -53,19 +53,12 @@ export default function TaskTable({ tasks }) {
         <thead className="bg-cyan-700 text-white">
 
           <tr>
-
             <th className="px-5 py-4 text-left">Task</th>
-
             <th className="px-5 py-4 text-left">Assigned To</th>
-
             <th className="px-5 py-4 text-left">Priority</th>
-
             <th className="px-5 py-4 text-left">Status</th>
-
             <th className="px-5 py-4 text-left">Due Date</th>
-
             <th className="px-5 py-4 text-left">Hours</th>
-
           </tr>
 
         </thead>
@@ -75,14 +68,12 @@ export default function TaskTable({ tasks }) {
           {tasks.length === 0 ? (
 
             <tr>
-
               <td
                 colSpan="6"
                 className="text-center py-10 text-gray-500"
               >
                 No Tasks Available
               </td>
-
             </tr>
 
           ) : (
@@ -95,7 +86,6 @@ export default function TaskTable({ tasks }) {
               >
 
                 <td className="px-5 py-4">
-
                   <div className="font-semibold text-gray-800">
                     {task.title}
                   </div>
@@ -103,7 +93,6 @@ export default function TaskTable({ tasks }) {
                   <div className="text-sm text-gray-500 mt-1">
                     {task.project_name || "No Project"}
                   </div>
-
                 </td>
 
                 <td className="px-5 py-4 font-medium text-gray-700">
@@ -111,44 +100,38 @@ export default function TaskTable({ tasks }) {
                 </td>
 
                 <td className="px-5 py-4">
-
-  <select
-    value={task.status || "To Do"}
-    onChange={(e) => updateStatus(task.id, e.target.value)}
-    className="border border-cyan-300 rounded-lg px-3 py-2"
-  >
-    <option value="To Do">To Do</option>
-    <option value="In Progress">In Progress</option>
-    <option value="Review">Review</option>
-    <option value="Done">Done</option>
-  </select>
-
-</td>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${priorityColor(task.priority)}`}
+                  >
+                    {task.priority}
+                  </span>
+                </td>
 
                 <td className="px-5 py-4">
-
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor(task.status)}`}
+                  <select
+                    value={task.status || "To Do"}
+                    onChange={(e) =>
+                      updateStatus(task.id, e.target.value)
+                    }
+                    className="border border-cyan-300 rounded-lg px-3 py-2 bg-white"
                   >
-                    {task.status || "To Do"}
-                  </span>
-
+                    <option value="To Do">To Do</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Review">Review</option>
+                    <option value="Done">Done</option>
+                  </select>
                 </td>
 
                 <td className="px-5 py-4 text-gray-700">
-
                   {task.due_date
                     ? new Date(task.due_date).toLocaleDateString()
                     : "-"}
-
                 </td>
 
                 <td className="px-5 py-4 text-gray-700">
-
                   {task.estimated_hours
                     ? `${task.estimated_hours} hrs`
                     : "-"}
-
                 </td>
 
               </tr>
