@@ -2,23 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ------------------------------
+/* ===========================
    Global Styles
------------------------------- */
+=========================== */
 
 @layer base {
+  html,
   body {
-    @apply bg-cyan-50 text-slate-800 font-sans;
+    @apply bg-[#F5F8FC] text-slate-800;
+    font-family: 'Inter', sans-serif;
   }
 
   * {
-    @apply transition-colors duration-200;
+    @apply transition-all duration-200;
   }
 }
 
-/* ------------------------------
+/* ===========================
    Scrollbar
------------------------------- */
+=========================== */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -26,179 +28,139 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #ecfeff;
+  background: #e5e7eb;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #0891b2;
-  border-radius: 999px;
+  background: #0F8B8D;
+  border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0e7490;
+  background: #0B2E59;
 }
 
-/* ------------------------------
+/* ===========================
    Glass Panel
------------------------------- */
+=========================== */
 
 .glass-panel {
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  border: 1px solid #cceff6;
-
+  background: #ffffff;
+  border: 1px solid #dbeafe;
   border-radius: 18px;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.08);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
 }
 
-/* ------------------------------
+/* ===========================
    Interactive Cards
------------------------------- */
+=========================== */
 
 .glass-card-interactive {
-
   background: #ffffff;
-
-  border: 1px solid #d9f3f8;
-
   border-radius: 18px;
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,.08);
-
-  transition: all .25s ease;
-
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transition: all .3s ease;
 }
 
-.glass-card-interactive:hover{
-
+.glass-card-interactive:hover {
   transform: translateY(-4px);
-
-  box-shadow:
-    0 16px 30px rgba(8,145,178,.15);
-
-  border-color:#0891b2;
-
+  box-shadow: 0 16px 35px rgba(15,139,141,.18);
+  border-color: #0F8B8D;
 }
 
-/* ------------------------------
+/* ===========================
    Buttons
------------------------------- */
+=========================== */
 
-.btn-primary{
-
-  background:#0891b2;
-
-  color:white;
-
-  border-radius:12px;
-
-  padding:10px 18px;
-
-  font-weight:600;
-
+.btn-primary {
+  background: #0F8B8D;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
 }
 
-.btn-primary:hover{
-
-  background:#0e7490;
-
+.btn-primary:hover {
+  background: #0B2E59;
 }
 
-/* ------------------------------
-   Tables
------------------------------- */
-
-.table-header{
-
-  background:#0891b2;
-
-  color:white;
-
-  font-weight:600;
-
-}
-
-.table-row:hover{
-
-  background:#ecfeff;
-
-}
-
-/* ------------------------------
+/* ===========================
    Inputs
------------------------------- */
+=========================== */
 
 input,
-select,
-textarea{
-
-  border:1px solid #cbd5e1;
-
-  border-radius:12px;
-
+textarea,
+select {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 10px;
 }
 
 input:focus,
-select:focus,
-textarea:focus{
-
-  outline:none;
-
-  border-color:#0891b2;
-
-  box-shadow:0 0 0 3px rgba(8,145,178,.15);
-
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #0F8B8D;
+  box-shadow: 0 0 0 3px rgba(15,139,141,.15);
 }
 
-/* ------------------------------
+/* ===========================
+   Tables
+=========================== */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #0B2E59;
+  color: white;
+}
+
+th {
+  padding: 14px;
+  font-weight: 600;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+  background: #f0fdff;
+}
+
+/* ===========================
    Badges
------------------------------- */
+=========================== */
 
-.badge{
-
-  padding:4px 10px;
-
-  border-radius:999px;
-
-  font-size:12px;
-
-  font-weight:600;
-
+.badge-success {
+  background: #dcfce7;
+  color: #15803d;
 }
 
-.badge-success{
-
-  background:#dcfce7;
-
-  color:#15803d;
-
+.badge-warning {
+  background: #fef3c7;
+  color: #b45309;
 }
 
-.badge-warning{
-
-  background:#fef3c7;
-
-  color:#b45309;
-
+.badge-danger {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
-.badge-danger{
-
-  background:#fee2e2;
-
-  color:#dc2626;
-
+.badge-info {
+  background: #ccfbf1;
+  color: #0f766e;
 }
 
-.badge-info{
+/* ===========================
+   Animations
+=========================== */
 
-  background:#cffafe;
-
-  color:#0f766e;
-
+.card-hover:hover {
+  transform: translateY(-5px);
 }
