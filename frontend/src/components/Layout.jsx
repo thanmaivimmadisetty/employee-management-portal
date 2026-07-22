@@ -1,16 +1,28 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Navbar from './Navbar';
-import { useAuth } from '../context/AuthContext';
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
 
 const Layout = ({ title }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-slate-950">
-        <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-brand-500 animate-spin" />
+      <div className="flex items-center justify-center h-screen bg-cyan-50">
+        <div className="flex flex-col items-center">
+
+          <div className="w-16 h-16 border-4 border-cyan-200 border-t-cyan-700 rounded-full animate-spin"></div>
+
+          <h2 className="mt-5 text-xl font-bold text-cyan-800">
+            Zayn Levi Technologies
+          </h2>
+
+          <p className="text-gray-500 text-sm">
+            Loading Employee Portal...
+          </p>
+
+        </div>
       </div>
     );
   }
@@ -20,14 +32,26 @@ const Layout = ({ title }) => {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950 text-slate-100 font-sans">
+    <div className="flex h-screen bg-cyan-50">
+
+      {/* Sidebar */}
       <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
+
+      {/* Main Section */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+
+        {/* Top Navbar */}
         <Navbar title={title} />
-        <main className="flex-1 overflow-y-auto p-8 bg-slate-950/20">
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-6 bg-cyan-50">
+
           <Outlet />
+
         </main>
+
       </div>
+
     </div>
   );
 };
