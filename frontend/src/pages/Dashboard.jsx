@@ -322,50 +322,109 @@ const today = new Date().toLocaleDateString();
         </div>
       )}
 
-      {/* Recent Attendance Logs Summary Table */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800">
-        <div className="flex items-center justify-between mb-6">
-          <h4 className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-            Recent Attendance Check-Ins
-          </h4>
-          <span className="text-xs text-slate-500 font-semibold">
-            Today: {today}
-          </span>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-                <th className="pb-3">Employee</th>
-                <th className="pb-3">Date</th>
-                <th className="pb-3">Check In</th>
-                <th className="pb-3 text-right">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/40">
-              {stats?.recentAttendanceLogs?.map((log, index) => (
-                <tr key={index} className="hover:bg-slate-900/10">
-                  <td className="py-3 font-semibold text-slate-200">{log.employeeName}</td>
-                  <td className="py-3 text-slate-400">{log.date}</td>
-                  <td className="py-3 text-slate-400">{log.checkIn || '--:--'}</td>
-                  <td className="py-3 text-right">
-                    <span className={`px-2 py-0.5 rounded font-extrabold text-[10px] ${
-                      log.status === 'Present' 
-                        ? 'bg-emerald-500/10 text-emerald-400' 
-                        : log.status === 'Late'
-                          ? 'bg-amber-500/10 text-amber-400'
-                          : 'bg-red-500/10 text-red-400'
-                    }`}>
-                      {log.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+     {/* Recent Attendance */}
+
+<div className="bg-white rounded-3xl shadow-lg p-6">
+
+  <div className="flex items-center justify-between mb-6">
+
+    <div>
+
+      <h3 className="text-xl font-bold text-[#0B2E59]">
+        Recent Attendance
+      </h3>
+
+      <p className="text-sm text-gray-500">
+        Attendance records for {today}
+      </p>
+
     </div>
+
+    <div className="bg-[#0F8B8D] text-white px-4 py-2 rounded-xl text-sm font-semibold">
+      Today's Logs
+    </div>
+
+  </div>
+
+  <div className="overflow-x-auto">
+
+    <table className="w-full">
+
+      <thead>
+
+        <tr className="bg-[#0B2E59] text-white">
+
+          <th className="px-6 py-4 text-left rounded-l-xl">
+            Employee
+          </th>
+
+          <th className="px-6 py-4 text-left">
+            Date
+          </th>
+
+          <th className="px-6 py-4 text-left">
+            Check In
+          </th>
+
+          <th className="px-6 py-4 text-center rounded-r-xl">
+            Status
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        {stats?.recentAttendanceLogs?.map((log,index)=>(
+
+          <tr
+            key={index}
+            className="border-b hover:bg-teal-50 transition"
+          >
+
+            <td className="px-6 py-4 font-semibold text-[#0B2E59]">
+              {log.employeeName}
+            </td>
+
+            <td className="px-6 py-4 text-gray-600">
+              {log.date}
+            </td>
+
+            <td className="px-6 py-4 text-gray-600">
+              {log.checkIn || "--:--"}
+            </td>
+
+            <td className="px-6 py-4 text-center">
+
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-semibold
+                ${
+                  log.status === "Present"
+                    ? "bg-green-100 text-green-700"
+                    : log.status === "Late"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+
+                {log.status}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        ))}
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
   );
 };
 
