@@ -6,27 +6,29 @@ import { Briefcase, Lock, Mail, AlertCircle } from 'lucide-react';
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  // If already authenticated, go to dashboard
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
 
-    setError('');
     setSubmitting(true);
+    setError('');
 
     const res = await login(email, password);
+
     setSubmitting(false);
 
     if (res.success) {
@@ -36,7 +38,6 @@ const Login = () => {
     }
   };
 
-  // Helper function for quick credentials injection
   const injectCredentials = (roleEmail, rolePass) => {
     setEmail(roleEmail);
     setPassword(rolePass);
@@ -44,120 +45,183 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 relative overflow-hidden font-sans">
-      {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0B4F8A] via-[#082C4C] to-[#16A5E8] px-4 relative overflow-hidden font-sans">
+
+      <div className="absolute top-20 left-20 w-80 h-80 bg-[#0B4F8A]/30 rounded-full blur-3xl"></div>
+
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-[#16A5E8]/30 rounded-full blur-3xl"></div>
 
       <div className="w-full max-w-md relative z-10">
-        {/* App Title Header */}
+
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-violet-500 flex items-center justify-center shadow-2xl shadow-brand-500/25 mx-auto mb-4">
-            <Briefcase className="w-7 h-7 text-white" />
+
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#0B4F8A] to-[#16A5E8] flex items-center justify-center mx-auto shadow-xl">
+
+            <Briefcase className="w-8 h-8 text-white"/>
+
           </div>
-          <h2 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-100 to-slate-300">
-            Workforce Portal
-          </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            Access your Employee Management dashboard
+
+          <h1 className="mt-5 text-4xl font-extrabold text-white">
+
+            EMP PORTAL
+
+          </h1>
+
+          <p className="mt-2 text-blue-100">
+
+            Employee Management System
+
           </p>
+
         </div>
 
-        {/* Login Form Panel */}
-        <div className="glass-panel p-8 rounded-3xl shadow-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+        <div className="bg-white rounded-3xl shadow-2xl p-8">
+
           {error && (
-            <div className="mb-6 flex items-start gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold animate-shake">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{error}</span>
+
+            <div className="mb-5 flex items-center gap-2 rounded-xl border border-red-300 bg-red-50 text-red-600 px-4 py-3">
+
+              <AlertCircle size={18}/>
+
+              <span className="text-sm">{error}</span>
+
             </div>
+
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
+
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+
+              <label className="block text-sm font-semibold text-[#0B4F8A] mb-2">
+
                 Email Address
+
               </label>
+
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500">
-                  <Mail className="w-4 h-4" />
-                </span>
+
+                <Mail className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
+
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e)=>setEmail(e.target.value)}
                   placeholder="name@company.com"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-800 bg-slate-950/60 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all font-sans"
-                  required
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
                 />
+
               </div>
+
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+
+              <label className="block text-sm font-semibold text-[#0B4F8A] mb-2">
+
                 Password
+
               </label>
+
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500">
-                  <Lock className="w-4 h-4" />
-                </span>
+
+                <Lock className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
+
                 <input
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e)=>setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-800 bg-slate-950/60 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all font-sans"
-                  required
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
                 />
-              </div>
+                </div>
+
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3 bg-brand-600 hover:bg-brand-500 active:bg-brand-700 disabled:opacity-50 text-white rounded-xl font-bold shadow-lg shadow-brand-600/25 transition-all text-sm mt-2 flex items-center justify-center"
+              className="w-full py-3 bg-[#16A5E8] hover:bg-[#0B4F8A] disabled:opacity-60 text-white rounded-xl font-bold transition-all duration-300 shadow-lg"
             >
-              {submitting ? 'Authenticating...' : 'Sign In'}
+              {submitting ? 'Signing In...' : 'Sign In'}
             </button>
+
           </form>
 
-          {/* Quick Login Helper Panel */}
-          <div className="mt-8 pt-6 border-t border-slate-800/80">
-            <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center mb-3">
-              Quick Logins (password: password123)
-            </span>
-            <div className="grid grid-cols-2 gap-2 text-[10px]">
+          <div className="mt-8 pt-6 border-t border-gray-200">
+
+            <p className="text-center text-xs uppercase tracking-widest text-[#0B4F8A] font-bold mb-4">
+
+              Quick Logins
+              <br />
+              <span className="font-normal text-gray-500">
+                Password: password123
+              </span>
+
+            </p>
+
+            <div className="grid grid-cols-2 gap-3">
+
               <button
                 type="button"
-                onClick={() => injectCredentials('admin@portal.com', 'password123')}
-                className="py-2 px-3 bg-slate-800/40 border border-slate-800 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all text-left font-medium"
+                onClick={() =>
+                  injectCredentials(
+                    'admin@portal.com',
+                    'password123'
+                  )
+                }
+                className="bg-[#EAF7FD] border border-[#16A5E8]/40 rounded-xl py-3 text-[#0B4F8A] font-semibold hover:bg-[#16A5E8] hover:text-white transition"
               >
-                💼 <span className="font-bold">Admin</span>
+                💼 Admin
               </button>
+
               <button
                 type="button"
-                onClick={() => injectCredentials('hr@portal.com', 'password123')}
-                className="py-2 px-3 bg-slate-800/40 border border-slate-800 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all text-left font-medium"
+                onClick={() =>
+                  injectCredentials(
+                    'hr@portal.com',
+                    'password123'
+                  )
+                }
+                className="bg-[#EAF7FD] border border-[#16A5E8]/40 rounded-xl py-3 text-[#0B4F8A] font-semibold hover:bg-[#16A5E8] hover:text-white transition"
               >
-                👥 <span className="font-bold">HR</span>
+                👥 HR
               </button>
+
               <button
                 type="button"
-                onClick={() => injectCredentials('manager@portal.com', 'password123')}
-                className="py-2 px-3 bg-slate-800/40 border border-slate-800 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all text-left font-medium"
+                onClick={() =>
+                  injectCredentials(
+                    'manager@portal.com',
+                    'password123'
+                  )
+                }
+                className="bg-[#EAF7FD] border border-[#16A5E8]/40 rounded-xl py-3 text-[#0B4F8A] font-semibold hover:bg-[#16A5E8] hover:text-white transition"
               >
-                👤 <span className="font-bold">Manager</span>
+                👤 Manager
               </button>
+
               <button
                 type="button"
-                onClick={() => injectCredentials('employee@portal.com', 'password123')}
-                className="py-2 px-3 bg-slate-800/40 border border-slate-800 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all text-left font-medium"
+                onClick={() =>
+                  injectCredentials(
+                    'employee@portal.com',
+                    'password123'
+                  )
+                }
+                className="bg-[#EAF7FD] border border-[#16A5E8]/40 rounded-xl py-3 text-[#0B4F8A] font-semibold hover:bg-[#16A5E8] hover:text-white transition"
               >
-                ⚡ <span className="font-bold">Employee</span>
+                ⚡ Employee
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 };
