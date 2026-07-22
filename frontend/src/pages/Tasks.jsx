@@ -225,3 +225,4 @@ export default function Tasks() {
     <TaskTable tasks={filteredTasks} />
   </div>
 );
+}
