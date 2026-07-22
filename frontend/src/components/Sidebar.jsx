@@ -127,15 +127,15 @@ const Sidebar = () => {
         <Briefcase className="w-6 h-6 text-cyan-700" />
       </div>
 
-      <div>
-        <h1 className="font-extrabold text-lg tracking-wide text-white">
-          ZAYN LEVI
-        </h1>
+     <div>
+  <h1 className="font-extrabold text-xl tracking-wide text-white">
+    EMP PORTAL
+  </h1>
 
-        <p className="text-xs text-cyan-100">
-          Technologies
-        </p>
-      </div>
+  <p className="text-xs text-cyan-100 font-medium">
+    Employee Management System
+  </p>
+</div>
 
     </div>
 
