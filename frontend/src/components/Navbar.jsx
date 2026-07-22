@@ -58,10 +58,10 @@ const Navbar = ({ title }) => {
       console.error(err);
     }
   };
-
   return (
-    <header className="h-16 bg-[#0B2E59] border-b border-[#0F8B8D] shadow-md flex items-center justify-between px-8">
+    <header className="h-16 bg-gradient-to-r from-[#0B4F8A] to-[#082C4C] border-b border-[#1AA7EC]/30 shadow-lg flex items-center justify-between px-8">
 
+      {/* Page Title */}
       <div>
         <h2 className="text-2xl font-bold text-white">
           {title || "Dashboard"}
@@ -70,52 +70,38 @@ const Navbar = ({ title }) => {
 
       <div className="flex items-center gap-6">
 
-        {/* Notification */}
-
+        {/* Notifications */}
         <div className="relative">
 
           <button
             onClick={() => setShowDropdown(!showDropdown)}
-            className="relative w-11 h-11 rounded-full bg-[#0F8B8D] hover:bg-teal-700 flex items-center justify-center transition"
+            className="relative w-11 h-11 rounded-full bg-[#1AA7EC] hover:bg-[#1596D4] flex items-center justify-center transition-all duration-300 shadow-md"
           >
-
             <Bell className="w-5 h-5 text-white" />
 
             {unreadCount > 0 && (
-
               <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">
-
                 {unreadCount}
-
               </span>
-
             )}
-
           </button>
 
           {showDropdown && (
-
             <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50">
 
-              <div className="flex justify-between items-center p-4 border-b">
+              <div className="flex items-center justify-between p-4 border-b">
 
-                <h3 className="font-bold text-[#0B2E59]">
-
+                <h3 className="font-bold text-[#0B4F8A]">
                   Notifications
-
                 </h3>
 
                 {unreadCount > 0 && (
-
                   <button
                     onClick={handleMarkAllRead}
-                    className="text-xs text-[#0F8B8D] font-semibold"
+                    className="text-xs font-semibold text-[#1AA7EC] hover:text-[#0B4F8A]"
                   >
-
                     Mark all read
-
                   </button>
-
                 )}
 
               </div>
@@ -123,92 +109,61 @@ const Navbar = ({ title }) => {
               <div className="max-h-72 overflow-y-auto">
 
                 {notifications.length === 0 ? (
-
                   <p className="text-center text-gray-500 py-6">
-
                     No Notifications
-
                   </p>
-
                 ) : (
-
                   notifications.map((notif) => (
-
                     <div
                       key={notif.id}
                       className={`p-4 border-b last:border-none ${
-                        notif.isRead
-                          ? "bg-white"
-                          : "bg-teal-50"
+                        notif.isRead ? "bg-white" : "bg-blue-50"
                       }`}
                     >
-
                       <p className="text-sm text-gray-700">
-
                         {notif.message}
-
                       </p>
 
                       <p className="text-xs text-gray-400 mt-1">
-
                         {new Date(notif.createdAt).toLocaleString()}
-
                       </p>
 
                       {!notif.isRead && (
-
                         <button
                           onClick={() => handleMarkRead(notif.id)}
-                          className="mt-2 flex items-center gap-1 text-[#0F8B8D] text-xs"
+                          className="mt-2 flex items-center gap-1 text-xs text-[#1AA7EC] hover:text-[#0B4F8A]"
                         >
-
                           <Check className="w-3 h-3" />
-
                           Mark as Read
-
                         </button>
-
                       )}
-
                     </div>
-
                   ))
-
                 )}
 
               </div>
 
             </div>
-
           )}
 
         </div>
 
-        {/* User */}
-
+        {/* User Profile */}
         <div className="flex items-center gap-3">
 
-          <div className="w-11 h-11 rounded-full bg-[#0F8B8D] flex items-center justify-center text-white font-bold">
-
+          <div className="w-11 h-11 rounded-full bg-[#1AA7EC] flex items-center justify-center text-white font-bold shadow-md">
             {user?.firstName?.charAt(0)}
             {user?.lastName?.charAt(0)}
-
           </div>
 
           <div>
-
             <h4 className="text-white font-semibold">
-
               {user?.firstName} {user?.lastName}
-
             </h4>
 
-            <p className="text-xs text-teal-200 uppercase">
-
+            <p className="text-xs uppercase tracking-wide text-blue-200">
               {user?.roleName}
-
             </p>
-
           </div>
 
         </div>
