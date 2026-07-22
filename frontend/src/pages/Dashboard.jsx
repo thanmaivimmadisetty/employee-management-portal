@@ -74,103 +74,224 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="w-10 h-10 rounded-full border-4 border-slate-800 border-t-brand-500 animate-spin" />
-      </div>
-    );
-  }
+ if (loading) {
+  return (
+    <div className="flex items-center justify-center h-[70vh]">
+      <div className="flex flex-col items-center">
 
-  const role = user?.roleName;
+        <div className="w-16 h-16 border-4 border-[#0F8B8D]/30 border-t-[#0B2E59] rounded-full animate-spin"></div>
+
+        <h2 className="mt-6 text-2xl font-bold text-[#0B2E59]">
+          EMP PORTAL
+        </h2>
+
+        <p className="text-gray-500 mt-2">
+          Loading Dashboard...
+        </p>
+
+      </div>
+    </div>
+  );
+}
+
+const role = user?.roleName;
 const today = new Date().toLocaleDateString();
   return (
     <div className="space-y-8 font-sans">
-      {/* Welcome banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900/60 to-slate-950 border border-slate-800/80 shadow-lg">
+    {/* Welcome Banner */}
+
+<div className="bg-gradient-to-r from-[#0B2E59] to-[#0F8B8D] rounded-3xl shadow-xl p-8 text-white">
+
+  <div className="flex flex-col lg:flex-row justify-between items-center">
+
+    <div>
+
+      <h1 className="text-3xl font-bold">
+        Welcome, {user?.firstName} 👋
+      </h1>
+
+      <p className="mt-2 text-teal-100">
+        Welcome to the Employee Management Portal.
+        Monitor employees, payroll, attendance, recruitment,
+        and organizational performance from one place.
+      </p>
+
+    </div>
+
+    <div className="mt-6 lg:mt-0 bg-white/10 rounded-2xl px-6 py-4">
+
+      <div className="flex items-center gap-3">
+
+        <Clock className="w-6 h-6" />
+
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-100 tracking-tight">
-            Welcome back, {user?.firstName}!
-          </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Here's what is happening with the organization's workforce today.
+
+          <p className="text-sm">
+            Today
           </p>
+
+          <h3 className="font-bold">
+            {today}
+          </h3>
+
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950/60 border border-slate-800 text-xs font-bold text-slate-300">
-          <Clock className="w-4 h-4 text-brand-400" />
-          <span>Last Login: {new Date().toLocaleDateString()}</span>
-        </div>
+
       </div>
 
-      {/* DB Disconnected Warning Badge */}
-      {!dbConnected && (
-        <div className="flex items-center gap-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
-          <AlertTriangle className="w-5 h-5 shrink-0" />
-          <div>
-            <span className="font-bold">Demonstration Mode:</span> Database connection failed or MySQL is not running yet. Displaying mock visualization statistics. Follow setup steps in README.md to configure connection.
-          </div>
-        </div>
+    </div>
+
+  </div>
+
+</div>
       )}
 
-      {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard 
-          title="Active Headcount" 
-          value={stats?.totalEmployees || 0} 
-          icon={Users} 
-          trend="+1 this week" 
-          trendType="positive"
-          description="active staff accounts"
-        />
-        <StatCard 
-          title="Departments" 
-          value={stats?.totalDepartments || 0} 
-          icon={Building2} 
-          description="active organizational business units"
-        />
-        <StatCard 
-          title="Open Positions" 
-          value={stats?.openJobs || 0} 
-          icon={Briefcase} 
-          trend="2 active hiring roles"
-          trendType="neutral"
-          description="open jobs on job boards"
-        />
-        <StatCard 
-          title="Attendance Rate" 
-          value={`${stats?.attendanceRateToday || 0}%`} 
-          icon={CalendarCheck} 
-          trend={stats?.attendanceRateToday > 70 ? "Above target" : "Below target"}
-          trendType={stats?.attendanceRateToday > 70 ? "positive" : "negative"}
-          description="checked-in staff members today"
-        />
-      </div>
+   {/* KPI Statistics */}
 
-      {/* Charts section (Only Admin, HR, Manager can view overall stats charts) */}
-      {['Admin', 'HR', 'Manager'].includes(role) && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Department Headcount Bar Chart */}
-          <div className="glass-panel p-6 rounded-3xl border border-slate-800">
-            <h4 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-6">
-              Department Headcounts
-            </h4>
-            <div className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats?.departmentHeadcounts} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="name" stroke="#64748b" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#64748b" fontSize={11} tickLine={false} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px' }}
-                    labelStyle={{ fontWeight: 'bold', color: '#f1f5f9' }}
-                    itemStyle={{ color: '#8b5cf6' }}
-                  />
-                  <Bar dataKey="headcount" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
+  <StatCard
+    title="Employees"
+    value={stats?.totalEmployees || 0}
+    icon={Users}
+    trend="+5%"
+    trendType="positive"
+    description="Total Employees"
+  />
+
+  <StatCard
+    title="Departments"
+    value={stats?.totalDepartments || 0}
+    icon={Building2}
+    description="Business Units"
+  />
+
+  <StatCard
+    title="Open Jobs"
+    value={stats?.openJobs || 0}
+    icon={Briefcase}
+    trend="Hiring"
+    trendType="neutral"
+    description="Vacancies"
+  />
+
+  <StatCard
+    title="Attendance"
+    value={`${stats?.attendanceRateToday || 0}%`}
+    icon={CalendarCheck}
+    trend={
+      stats?.attendanceRateToday >= 70
+        ? "Excellent"
+        : "Needs Attention"
+    }
+    trendType={
+      stats?.attendanceRateToday >= 70
+        ? "positive"
+        : "negative"
+    }
+    description="Today's Attendance"
+  />
+
+</div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+
+  {/* Department Chart */}
+
+  <div className="bg-white rounded-3xl shadow-lg p-6">
+
+    <h3 className="text-lg font-bold text-[#0B2E59] mb-6">
+
+      Department Headcount
+
+    </h3>
+
+    <ResponsiveContainer width="100%" height={300}>
+
+      <BarChart data={stats?.departmentHeadcounts}>
+
+        <CartesianGrid strokeDasharray="3 3" />
+
+        <XAxis dataKey="name" />
+
+        <YAxis />
+
+        <Tooltip />
+
+        <Bar
+          dataKey="headcount"
+          fill="#0F8B8D"
+          radius={[8,8,0,0]}
+        />
+
+      </BarChart>
+
+    </ResponsiveContainer>
+
+  </div>
+
+  {/* Payroll */}
+
+  <div className="bg-white rounded-3xl shadow-lg p-6">
+
+    <h3 className="text-lg font-bold text-[#0B2E59] mb-6">
+
+      Monthly Payroll
+
+    </h3>
+
+    <ResponsiveContainer width="100%" height={300}>
+
+      <AreaChart data={stats?.monthlyPayrollTotals}>
+
+        <defs>
+
+          <linearGradient
+            id="payroll"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+
+            <stop
+              offset="5%"
+              stopColor="#0F8B8D"
+              stopOpacity={0.8}
+            />
+
+            <stop
+              offset="95%"
+              stopColor="#0F8B8D"
+              stopOpacity={0}
+            />
+
+          </linearGradient>
+
+        </defs>
+
+        <CartesianGrid strokeDasharray="3 3" />
+
+        <XAxis dataKey="month"/>
+
+        <YAxis/>
+
+        <Tooltip/>
+
+        <Area
+          type="monotone"
+          dataKey="total"
+          stroke="#0B2E59"
+          fill="url(#payroll)"
+          strokeWidth={3}
+        />
+
+      </AreaChart>
+
+    </ResponsiveContainer>
+
+  </div>
+
+</div>
           {/* Monthly Payroll Line Chart */}
           <div className="glass-panel p-6 rounded-3xl border border-slate-800">
             <h4 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-6">
