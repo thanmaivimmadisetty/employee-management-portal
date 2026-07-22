@@ -12,7 +12,7 @@ const StatCard = ({
     <div className="relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
       {/* Top Accent */}
-      <div className="h-1 bg-[#0F8B8D]"></div>
+      <div className="h-1 bg-[#1AA7EC]"></div>
 
       <div className="p-6">
 
@@ -24,14 +24,14 @@ const StatCard = ({
               {title}
             </p>
 
-            <h2 className="mt-2 text-3xl font-bold text-[#0B2E59]">
+            <h2 className="mt-2 text-3xl font-bold text-[#0B4F8A]">
               {value}
             </h2>
 
           </div>
 
           {Icon && (
-            <div className="w-14 h-14 rounded-xl bg-[#0F8B8D] flex items-center justify-center shadow-md">
+            <div className="w-14 h-14 rounded-xl bg-[#1AA7EC] flex items-center justify-center shadow-lg">
 
               <Icon className="w-7 h-7 text-white" />
 
@@ -52,7 +52,7 @@ const StatCard = ({
                     ? "bg-green-100 text-green-700"
                     : trendType === "negative"
                     ? "bg-red-100 text-red-700"
-                    : "bg-teal-100 text-teal-700"
+                    : "bg-blue-100 text-[#0B4F8A]"
                 }`}
               >
                 {trend}
@@ -63,9 +63,7 @@ const StatCard = ({
             {description && (
 
               <span className="text-sm text-gray-500">
-
                 {description}
-
               </span>
 
             )}
