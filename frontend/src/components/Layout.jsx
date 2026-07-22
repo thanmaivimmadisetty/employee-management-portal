@@ -12,17 +12,17 @@ const Layout = ({ title }) => {
       <div className="flex items-center justify-center h-screen bg-cyan-50">
         <div className="flex flex-col items-center">
 
-          <div className="w-16 h-16 border-4 border-cyan-200 border-t-cyan-700 rounded-full animate-spin"></div>
+  <div className="w-16 h-16 border-4 border-cyan-200 border-t-cyan-700 rounded-full animate-spin"></div>
 
-          <h2 className="mt-5 text-xl font-bold text-cyan-800">
-            Zayn Levi Technologies
-          </h2>
+  <h2 className="mt-5 text-2xl font-extrabold text-cyan-800 tracking-wide">
+    EMP PORTAL
+  </h2>
 
-          <p className="text-gray-500 text-sm">
-            Loading Employee Portal...
-          </p>
+  <p className="text-gray-500 text-sm mt-1">
+    Employee Management System
+  </p>
 
-        </div>
+</div>
       </div>
     );
   }
