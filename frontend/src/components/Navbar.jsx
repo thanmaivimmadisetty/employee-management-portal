@@ -1,37 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import api from '../utils/api';
-import { Bell, Check } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import api from "../utils/api";
+import { Bell, Check } from "lucide-react";
 
 const Navbar = ({ title }) => {
   const { user } = useAuth();
+
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const fetchNotifications = async () => {
     try {
-      const res = await api.get('/notifications');
+      const res = await api.get("/notifications");
       setNotifications(res.data);
     } catch (err) {
-      console.error('Failed to fetch notifications:', err);
+      console.error(err);
     }
   };
 
   useEffect(() => {
     if (user) {
       fetchNotifications();
+
       const interval = setInterval(fetchNotifications, 30000);
+
       return () => clearInterval(interval);
     }
   }, [user]);
 
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const handleMarkRead = async (id) => {
     try {
       await api.patch(`/notifications/${id}/read`);
-      setNotifications(prev =>
-        prev.map(n =>
+
+      setNotifications((prev) =>
+        prev.map((n) =>
           n.id === id ? { ...n, isRead: 1 } : n
         )
       );
@@ -42,9 +46,13 @@ const Navbar = ({ title }) => {
 
   const handleMarkAllRead = async () => {
     try {
-      await api.patch('/notifications/read-all');
-      setNotifications(prev =>
-        prev.map(n => ({ ...n, isRead: 1 }))
+      await api.patch("/notifications/read-all");
+
+      setNotifications((prev) =>
+        prev.map((n) => ({
+          ...n,
+          isRead: 1,
+        }))
       );
     } catch (err) {
       console.error(err);
@@ -52,90 +60,114 @@ const Navbar = ({ title }) => {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-cyan-200 shadow-sm flex items-center justify-between px-8">
+    <header className="h-16 bg-[#0B2E59] border-b border-[#0F8B8D] shadow-md flex items-center justify-between px-8">
 
       <div>
-        <h2 className="text-2xl font-bold text-cyan-800">
+        <h2 className="text-2xl font-bold text-white">
           {title || "Dashboard"}
         </h2>
       </div>
 
       <div className="flex items-center gap-6">
 
+        {/* Notification */}
+
         <div className="relative">
 
           <button
             onClick={() => setShowDropdown(!showDropdown)}
-            className="relative w-11 h-11 rounded-full bg-cyan-100 hover:bg-cyan-200 transition flex items-center justify-center"
+            className="relative w-11 h-11 rounded-full bg-[#0F8B8D] hover:bg-teal-700 flex items-center justify-center transition"
           >
-            <Bell className="w-5 h-5 text-cyan-700" />
+
+            <Bell className="w-5 h-5 text-white" />
 
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+
+              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">
+
                 {unreadCount}
+
               </span>
+
             )}
+
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-xl border border-cyan-200 p-4 z-50">
 
-              <div className="flex justify-between items-center mb-3">
+            <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50">
 
-                <h3 className="font-semibold text-cyan-800">
+              <div className="flex justify-between items-center p-4 border-b">
+
+                <h3 className="font-bold text-[#0B2E59]">
+
                   Notifications
+
                 </h3>
 
                 {unreadCount > 0 && (
+
                   <button
                     onClick={handleMarkAllRead}
-                    className="text-xs text-cyan-700 hover:underline"
+                    className="text-xs text-[#0F8B8D] font-semibold"
                   >
+
                     Mark all read
+
                   </button>
+
                 )}
 
               </div>
 
-              <div className="max-h-72 overflow-y-auto space-y-2">
+              <div className="max-h-72 overflow-y-auto">
 
                 {notifications.length === 0 ? (
 
-                  <p className="text-gray-500 text-center py-4">
-                    No notifications
+                  <p className="text-center text-gray-500 py-6">
+
+                    No Notifications
+
                   </p>
 
                 ) : (
 
-                  notifications.map(notif => (
+                  notifications.map((notif) => (
 
                     <div
                       key={notif.id}
-                      className={`rounded-lg p-3 border ${
+                      className={`p-4 border-b last:border-none ${
                         notif.isRead
-                          ? 'bg-gray-50 border-gray-200'
-                          : 'bg-cyan-50 border-cyan-300'
+                          ? "bg-white"
+                          : "bg-teal-50"
                       }`}
                     >
 
                       <p className="text-sm text-gray-700">
+
                         {notif.message}
+
                       </p>
 
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-400 mt-1">
+
                         {new Date(notif.createdAt).toLocaleString()}
+
                       </p>
 
                       {!notif.isRead && (
+
                         <button
-                          onClick={() =>
-                            handleMarkRead(notif.id)
-                          }
-                          className="mt-2 flex items-center gap-1 text-cyan-700 text-xs"
+                          onClick={() => handleMarkRead(notif.id)}
+                          className="mt-2 flex items-center gap-1 text-[#0F8B8D] text-xs"
                         >
+
                           <Check className="w-3 h-3" />
-                          Mark as read
+
+                          Mark as Read
+
                         </button>
+
                       )}
 
                     </div>
@@ -147,25 +179,34 @@ const Navbar = ({ title }) => {
               </div>
 
             </div>
+
           )}
 
         </div>
 
+        {/* User */}
+
         <div className="flex items-center gap-3">
 
-          <div className="w-11 h-11 rounded-full bg-cyan-700 text-white flex items-center justify-center font-bold">
+          <div className="w-11 h-11 rounded-full bg-[#0F8B8D] flex items-center justify-center text-white font-bold">
+
             {user?.firstName?.charAt(0)}
             {user?.lastName?.charAt(0)}
+
           </div>
 
           <div>
 
-            <h4 className="font-semibold text-gray-800">
+            <h4 className="text-white font-semibold">
+
               {user?.firstName} {user?.lastName}
+
             </h4>
 
-            <p className="text-xs text-cyan-700 uppercase">
+            <p className="text-xs text-teal-200 uppercase">
+
               {user?.roleName}
+
             </p>
 
           </div>
