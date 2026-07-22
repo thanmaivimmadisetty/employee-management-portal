@@ -118,87 +118,94 @@ const Sidebar = () => {
     item.roles.includes(role)
   );
   return (
-  <aside className="w-64 bg-[#0B2E59] text-white flex flex-col h-full shadow-2xl">
+    <aside className="w-64 bg-gradient-to-b from-[#0B4F8A] to-[#082C4C] text-white flex flex-col h-full shadow-2xl">
 
-    {/* Logo */}
-    <div className="p-6 border-b border-[#0F8B8D] flex items-center gap-3">
+      {/* Logo */}
+      <div className="p-6 border-b border-[#1AA7EC]/40">
 
-      <div className="w-12 h-12 rounded-xl bg-[#0F8B8D] flex items-center justify-center shadow-lg">
-        <Briefcase className="w-6 h-6 text-white" />
+        <div className="flex items-center gap-3">
+
+          <div className="w-12 h-12 rounded-xl bg-[#1AA7EC] flex items-center justify-center shadow-lg">
+
+            <Briefcase className="w-6 h-6 text-white" />
+
+          </div>
+
+          <div>
+
+            <h1 className="text-xl font-extrabold tracking-wide">
+              EMP PORTAL
+            </h1>
+
+            <p className="text-xs text-blue-200">
+              Employee Management System
+            </p>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <h1 className="font-extrabold text-xl tracking-wide text-white">
-          EMP PORTAL
-        </h1>
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-2">
 
-        <p className="text-xs text-teal-200 font-medium">
-          Employee Management System
-        </p>
-      </div>
+        {allowedMenuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = location.pathname === item.path;
 
-    </div>
-
-    {/* Navigation */}
-    <nav className="flex-1 px-4 py-5 overflow-y-auto space-y-2">
-
-      {allowedMenuItems.map((item) => {
-        const Icon = item.icon;
-        const isActive = location.pathname === item.path;
-
-        return (
-          <Link
-            key={item.name}
-            to={item.path}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-              isActive
-                ? "bg-[#0F8B8D] text-white shadow-lg"
-                : "text-gray-200 hover:bg-[#0F8B8D]/80 hover:text-white"
-            }`}
-          >
-            <Icon
-              className={`w-5 h-5 ${
-                isActive ? "text-white" : "text-teal-300"
+          return (
+            <Link
+              key={item.name}
+              to={item.path}
+              className={`group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 ${
+                isActive
+                  ? "bg-[#1AA7EC] text-white shadow-lg"
+                  : "text-gray-200 hover:bg-[#1AA7EC]/20 hover:text-white"
               }`}
-            />
+            >
+              <Icon
+                className={`w-5 h-5 ${
+                  isActive ? "text-white" : "text-blue-200"
+                }`}
+              />
 
-            <span className="text-sm font-medium">
-              {item.name}
-            </span>
-          </Link>
-        );
-      })}
+              <span className="text-sm font-medium">
+                {item.name}
+              </span>
+            </Link>
+          );
+        })}
 
-    </nav>
+      </nav>
 
-    {/* User Profile */}
-    <div className="border-t border-[#0F8B8D] p-4">
+      {/* User Section */}
+      <div className="border-t border-[#1AA7EC]/30 p-4">
 
-      <div className="bg-[#123A6D] rounded-xl p-4 mb-4">
+        <div className="bg-[#0A3D6E] rounded-xl p-4 mb-4 shadow-md">
 
-        <p className="font-semibold text-white truncate">
-          {user.firstName} {user.lastName}
-        </p>
+          <p className="font-semibold truncate">
+            {user.firstName} {user.lastName}
+          </p>
 
-        <p className="text-xs text-teal-300 uppercase tracking-wide mt-1">
-          {role}
-        </p>
+          <p className="text-xs uppercase tracking-wider text-blue-200 mt-1">
+            {role}
+          </p>
+
+        </div>
+
+        <button
+          onClick={logout}
+          className="w-full flex items-center justify-center gap-2 rounded-xl bg-red-500 hover:bg-red-600 py-3 font-semibold transition duration-300"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
+        </button>
 
       </div>
 
-      <button
-        onClick={logout}
-        className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition duration-300"
-      >
-        <LogOut className="w-4 h-4" />
-        Logout
-      </button>
-
-    </div>
-
-  </aside>
-);
-
+    </aside>
+  );
 };
 
 export default Sidebar;
