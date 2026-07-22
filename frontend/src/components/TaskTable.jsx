@@ -6,7 +6,6 @@ const API =
   "https://employee-management-portal-2.onrender.com";
 
 export default function TaskTable({ tasks }) {
-
   const priorityColor = (priority) => {
     switch (priority) {
       case "Critical":
@@ -14,7 +13,7 @@ export default function TaskTable({ tasks }) {
       case "High":
         return "bg-orange-100 text-orange-700";
       case "Medium":
-        return "bg-cyan-100 text-cyan-700";
+        return "bg-blue-100 text-[#0B4F8A]";
       case "Low":
         return "bg-green-100 text-green-700";
       default:
@@ -36,21 +35,24 @@ export default function TaskTable({ tasks }) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-cyan-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl border border-blue-200 overflow-hidden">
 
-      <div className="flex justify-between items-center px-6 py-4 border-b bg-cyan-50">
-        <h2 className="text-xl font-bold text-cyan-800">
+      {/* Header */}
+      <div className="flex justify-between items-center px-6 py-4 border-b border-blue-200 bg-blue-50">
+
+        <h2 className="text-xl font-bold text-[#0B4F8A]">
           Project Tasks
         </h2>
 
-        <span className="bg-cyan-700 text-white px-4 py-2 rounded-full text-sm">
+        <span className="bg-[#1AA7EC] text-white px-4 py-2 rounded-full text-sm font-semibold shadow">
           {tasks.length} Tasks
         </span>
+
       </div>
 
       <table className="w-full">
 
-        <thead className="bg-cyan-700 text-white">
+        <thead className="bg-[#0B4F8A] text-white">
 
           <tr>
             <th className="px-5 py-4 text-left">Task</th>
@@ -68,12 +70,14 @@ export default function TaskTable({ tasks }) {
           {tasks.length === 0 ? (
 
             <tr>
+
               <td
                 colSpan="6"
-                className="text-center py-10 text-gray-500"
+                className="py-10 text-center text-gray-500"
               >
                 No Tasks Available
               </td>
+
             </tr>
 
           ) : (
@@ -82,17 +86,19 @@ export default function TaskTable({ tasks }) {
 
               <tr
                 key={task.id}
-                className="border-b hover:bg-cyan-50 transition duration-200"
+                className="border-b hover:bg-blue-50 transition duration-200"
               >
 
                 <td className="px-5 py-4">
-                  <div className="font-semibold text-gray-800">
+
+                  <div className="font-semibold text-[#0B4F8A]">
                     {task.title}
                   </div>
 
                   <div className="text-sm text-gray-500 mt-1">
                     {task.project_name || "No Project"}
                   </div>
+
                 </td>
 
                 <td className="px-5 py-4 font-medium text-gray-700">
@@ -100,26 +106,32 @@ export default function TaskTable({ tasks }) {
                 </td>
 
                 <td className="px-5 py-4">
+
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${priorityColor(task.priority)}`}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${priorityColor(
+                      task.priority
+                    )}`}
                   >
                     {task.priority}
                   </span>
+
                 </td>
 
                 <td className="px-5 py-4">
+
                   <select
                     value={task.status || "To Do"}
                     onChange={(e) =>
                       updateStatus(task.id, e.target.value)
                     }
-                    className="border border-cyan-300 rounded-lg px-3 py-2 bg-white"
+                    className="border border-blue-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
                   >
                     <option value="To Do">To Do</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Review">Review</option>
                     <option value="Done">Done</option>
                   </select>
+
                 </td>
 
                 <td className="px-5 py-4 text-gray-700">
