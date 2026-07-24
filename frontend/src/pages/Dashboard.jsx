@@ -4,11 +4,7 @@ import api from "../utils/api";
 import StatCard from "../components/StatCard";
 
 import {
-  Users,
-  Building2,
-  Briefcase,
-  CalendarCheck,
-  Clock,
+  Clock
 } from "lucide-react";
 
 import {
@@ -184,55 +180,86 @@ const Dashboard = () => {
 
       </div>
 
-     {/* KPI Statistics */}
+  
+{/* Employee Dashboard Cards */}
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="Employees"
-          value={stats?.totalEmployees ?? 0}
-          icon={Users}
-          trend="+5%"
-          trendType="positive"
-          description="Total Employees"
-        />
+<div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
 
-        <StatCard
-          title="Departments"
-          value={stats?.totalDepartments ?? 0}
-          icon={Building2}
-          trend="Active"
-          trendType="neutral"
-          description="Business Units"
-        />
+  {/* Project Details */}
+  <div className="rounded-2xl bg-white p-6 shadow-lg border-l-4 border-[#0B4F8A]">
+    <h3 className="text-lg font-bold text-[#0B4F8A]">
+      Project Details
+    </h3>
 
-        <StatCard
-          title="Open Jobs"
-          value={stats?.openJobs ?? 0}
-          icon={Briefcase}
-          trend="Hiring"
-          trendType="positive"
-          description="Current Vacancies"
-        />
+    <p className="mt-4 font-semibold">
+      Invoice Generation System
+    </p>
 
-        <StatCard
-          title="Attendance"
-          value={`${stats?.attendanceRateToday ?? 0}%`}
-          icon={CalendarCheck}
-          trend={
-            (stats?.attendanceRateToday ?? 0) >= 70
-              ? "Excellent"
-              : "Needs Attention"
-          }
-          trendType={
-            (stats?.attendanceRateToday ?? 0) >= 70
-              ? "positive"
-              : "negative"
-          }
-          description="Today's Attendance"
-        />
-      </div>
+    <p className="text-sm text-gray-500 mt-2">
+      Status : In Progress
+    </p>
 
-    </div>
+    <p className="text-sm text-gray-500">
+      Deadline : 30 Jul 2026
+    </p>
+  </div>
+
+  {/* Login & Logout */}
+  <div className="rounded-2xl bg-white p-6 shadow-lg border-l-4 border-green-500">
+    <h3 className="text-lg font-bold text-green-700">
+      Login Details
+    </h3>
+
+    <p className="mt-4 text-sm">
+      Login Time
+    </p>
+
+    <h2 className="text-xl font-bold">
+      09:00 AM
+    </h2>
+
+    <p className="mt-3 text-sm">
+      Logout Time
+    </p>
+
+    <h2 className="text-xl font-bold text-red-500">
+      --
+    </h2>
+  </div>
+
+  {/* High Priority Tasks */}
+  <div className="rounded-2xl bg-white p-6 shadow-lg border-l-4 border-red-500">
+    <h3 className="text-lg font-bold text-red-600">
+      High Priority Tasks
+    </h3>
+
+    <ul className="mt-4 space-y-2 text-sm">
+      <li>• Complete Invoice Module</li>
+      <li>• Update Daily Tracker</li>
+      <li>• Review Employee Requests</li>
+    </ul>
+  </div>
+
+  {/* Leave Details */}
+  <div className="rounded-2xl bg-white p-6 shadow-lg border-l-4 border-purple-500">
+    <h3 className="text-lg font-bold text-purple-700">
+      Leave Details
+    </h3>
+
+    <p className="mt-4">
+      Applied : 2
+    </p>
+
+    <p>
+      Approved : 1
+    </p>
+
+    <p>
+      Remaining : 10
+    </p>
+  </div>
+
+</div>
   );
 };
 
