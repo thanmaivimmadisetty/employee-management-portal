@@ -15,13 +15,8 @@ const Layout = ({ title }) => {
           <div className="w-16 h-16 border-4 border-[#1AA7EC]/30 border-t-[#0B4F8A] rounded-full animate-spin"></div>
 
           <h2 className="mt-6 text-2xl font-bold text-[#0B4F8A]">
-            EMP PORTAL
+           Employee Management System
           </h2>
-
-          <p className="mt-2 text-gray-500">
-            Employee Management System
-          </p>
-
         </div>
       </div>
     );
