@@ -18,10 +18,18 @@ const notificationController = require('../controllers/notificationController');
 const onboardingController = require('../controllers/onboardingController');
 const trackerController = require('../controllers/trackerController');
 const activityController=require("../controllers/activityController");
-
-// --- Auth Routes ---
 router.post('/auth/login', authController.login);
-router.get('/auth/me', authenticateToken, authController.getMe);
+
+router.post(
+  '/auth/reset-password',
+  authController.resetPassword
+);
+
+router.get(
+  '/auth/me',
+  authenticateToken,
+  authController.getMe
+);
 
 // --- Employee Routes ---
 router.get('/employees', authenticateToken, authorizeRoles('Admin', 'HR', 'Manager'), employeeController.getAllEmployees);
