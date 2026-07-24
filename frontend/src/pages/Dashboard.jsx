@@ -137,8 +137,8 @@ const Dashboard = () => {
           <div>
 
             <h1 className="text-3xl font-bold">
-              Welcome, {user?.firstName} 👋
-            </h1>
+  Welcome, {user?.firstName || user?.name || "User"} 👋
+</h1>
 
             <div className="mt-5 flex flex-wrap gap-3">
 
@@ -234,125 +234,6 @@ const Dashboard = () => {
 
       </div>
 
-    
-
-
-
-      {/* Recent Attendance */}
-
-      <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-lg">
-
-        <div className="mb-6 flex items-center justify-between">
-
-          <div>
-
-            <h3 className="text-2xl font-bold text-[#0B4F8A]">
-              Recent Attendance
-            </h3>
-
-            <p className="mt-1 text-sm text-gray-500">
-              Latest employee attendance records
-            </p>
-
-          </div>
-
-          <div className="rounded-xl bg-[#1AA7EC] px-4 py-2 font-semibold text-white shadow">
-            {stats?.recentAttendanceLogs?.length || 0} Records
-          </div>
-
-        </div>
-
-        <div className="overflow-x-auto">
-
-          <table className="min-w-full">
-
-            <thead>
-
-              <tr className="bg-[#0B4F8A] text-white">
-
-                <th className="rounded-l-xl px-6 py-4 text-left">
-                  Employee
-                </th>
-
-                <th className="px-6 py-4 text-left">
-                  Date
-                </th>
-
-                <th className="px-6 py-4 text-left">
-                  Check In
-                </th>
-
-                <th className="rounded-r-xl px-6 py-4 text-center">
-                  Status
-                </th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {stats?.recentAttendanceLogs?.length > 0 ? (
-
-                stats.recentAttendanceLogs.map((log, index) => (
-
-                  <tr
-                    key={index}
-                    className="border-b transition hover:bg-blue-50"
-                  >
-
-                    <td className="px-6 py-4 font-semibold text-[#0B4F8A]">
-                      {log.employeeName}
-                    </td>
-
-                    <td className="px-6 py-4 text-gray-600">
-                      {log.date}
-                    </td>
-
-                    <td className="px-6 py-4 text-gray-600">
-                      {log.checkIn || "--:--"}
-                    </td>
-
-                    <td className="px-6 py-4 text-center">
-
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          log.status === "Present"
-                            ? "bg-green-100 text-green-700"
-                            : log.status === "Late"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {log.status}
-                      </span>
-
-                    </td>
-
-                  </tr>
-
-                ))
-
-              ) : (
-
-                <tr>
-
-                  <td
-                    colSpan={4}
-                    className="py-10 text-center text-gray-500"
-                  >
-                    No attendance records found.
-                  </td>
-
-                </tr>
-
-              )}
-
-            </tbody>
-
-          </table>
-
-        </div>
 
       </div>
 
