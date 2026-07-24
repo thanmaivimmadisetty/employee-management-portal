@@ -10,6 +10,7 @@ export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [form, setForm] = useState({
     title: "",
@@ -59,23 +60,36 @@ export default function Tasks() {
     });
   };
 
+  const resetForm = () => {
+    setForm({
+      title: "",
+      description: "",
+      project_name: "",
+      assigned_to: "",
+      assigned_by: "",
+      priority: "Medium",
+      due_date: "",
+      estimated_hours: "",
+    });
+  };
+
+  const openCreateModal = () => {
+    resetForm();
+    setIsModalOpen(true);
+  };
+
+  const closeCreateModal = () => {
+    setIsModalOpen(false);
+  };
+
   const createTask = async () => {
     try {
       await axios.post(`${API}/api/tasks`, form);
 
       alert("Task Created Successfully");
 
-      setForm({
-        title: "",
-        description: "",
-        project_name: "",
-        assigned_to: "",
-        assigned_by: "",
-        priority: "Medium",
-        due_date: "",
-        estimated_hours: "",
-      });
-
+      resetForm();
+      setIsModalOpen(false);
       loadTasks();
     } catch (err) {
       console.error(err);
@@ -94,9 +108,18 @@ export default function Tasks() {
   return (
   <div className="min-h-screen bg-blue-50 p-6">
 
-    <h1 className="text-4xl font-bold text-[#0B4F8A] mb-6">
-      ZLT Task Manager
-    </h1>
+    <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+      <h1 className="text-4xl font-bold text-[#0B4F8A]">
+        ZLT Task Manager
+      </h1>
+
+      <button
+        onClick={openCreateModal}
+        className="bg-[#1AA7EC] hover:bg-[#0B4F8A] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+      >
+        + Create Task
+      </button>
+    </div>
 
     <div className="grid md:grid-cols-4 gap-4 mb-8">
 
@@ -122,93 +145,119 @@ export default function Tasks() {
 
     </div>
 
-    <div className="bg-white rounded-2xl shadow-xl border border-blue-200 p-6 mb-8">
-
-      <h2 className="text-2xl font-semibold text-[#0B4F8A] mb-5">
-        Create New Task
-      </h2>
-
-      <div className="grid md:grid-cols-2 gap-4">
-
-        <input
-          className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="title"
-          placeholder="Task Title"
-          value={form.title}
-          onChange={handleChange}
-        />
-
-        <input
-          className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="project_name"
-          placeholder="Project Name"
-          value={form.project_name}
-          onChange={handleChange}
-        />
-
-        <textarea
-          className="border border-blue-300 rounded-lg p-3 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="description"
-          placeholder="Task Description"
-          value={form.description}
-          onChange={handleChange}
-        />
-
-        <select
-          className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="assigned_to"
-          value={form.assigned_to}
-          onChange={handleChange}
-        >
-          <option value="">Assign Employee</option>
-
-          {employees.map((emp) => (
-            <option key={emp.id} value={emp.id}>
-              {emp.firstName} {emp.lastName}
-            </option>
-          ))}
-
-        </select>
-
-        <select
-          className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="priority"
-          value={form.priority}
-          onChange={handleChange}
-        >
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-          <option>Critical</option>
-        </select>
-
-        <input
-          type="date"
-          className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="due_date"
-          value={form.due_date}
-          onChange={handleChange}
-        />
-
-        <input
-          type="number"
-          className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-          name="estimated_hours"
-          placeholder="Estimated Hours"
-          value={form.estimated_hours}
-          onChange={handleChange}
-        />
-
-      </div>
-
-      <button
-        onClick={createTask}
-        className="mt-6 bg-[#1AA7EC] hover:bg-[#0B4F8A] text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300"
+    {isModalOpen && (
+      <div
+        className="fixed inset-0 bg-black/50 flex items-start md:items-center justify-center z-50 p-4 overflow-y-auto"
+        onClick={closeCreateModal}
       >
-        + Create Task
-      </button>
+        <div
+          className="bg-white rounded-2xl shadow-xl border border-blue-200 p-6 mb-8 w-full max-w-2xl my-8"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-2xl font-semibold text-[#0B4F8A]">
+              Create New Task
+            </h2>
+            <button
+              onClick={closeCreateModal}
+              className="text-gray-400 hover:text-gray-600 text-2xl leading-none px-2"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+          </div>
 
-    </div>
+          <div className="grid md:grid-cols-2 gap-4">
+
+            <input
+              className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="title"
+              placeholder="Task Title"
+              value={form.title}
+              onChange={handleChange}
+            />
+
+            <input
+              className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="project_name"
+              placeholder="Project Name"
+              value={form.project_name}
+              onChange={handleChange}
+            />
+
+            <textarea
+              className="border border-blue-300 rounded-lg p-3 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="description"
+              placeholder="Task Description"
+              value={form.description}
+              onChange={handleChange}
+            />
+
+            <select
+              className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="assigned_to"
+              value={form.assigned_to}
+              onChange={handleChange}
+            >
+              <option value="">Assign Employee</option>
+
+              {employees.map((emp) => (
+                <option key={emp.id} value={emp.id}>
+                  {emp.firstName} {emp.lastName}
+                </option>
+              ))}
+
+            </select>
+
+            <select
+              className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="priority"
+              value={form.priority}
+              onChange={handleChange}
+            >
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+              <option>Critical</option>
+            </select>
+
+            <input
+              type="date"
+              className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="due_date"
+              value={form.due_date}
+              onChange={handleChange}
+            />
+
+            <input
+              type="number"
+              className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+              name="estimated_hours"
+              placeholder="Estimated Hours"
+              value={form.estimated_hours}
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="flex gap-3 mt-6">
+            <button
+              onClick={closeCreateModal}
+              className="flex-1 border border-blue-300 text-[#0B4F8A] px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all duration-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={createTask}
+              className="flex-1 bg-[#1AA7EC] hover:bg-[#0B4F8A] text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300"
+            >
+              + Create Task
+            </button>
+          </div>
+
+        </div>
+      </div>
+    )}
 
     <div className="mb-6">
 
