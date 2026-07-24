@@ -63,15 +63,9 @@ const Login = () => {
 
           <h1 className="mt-5 text-4xl font-extrabold text-white">
 
-            EMP PORTAL
-
-          </h1>
-
-          <p className="mt-2 text-blue-100">
-
             Employee Management System
 
-          </p>
+          </h1>
 
         </div>
 
