@@ -140,10 +140,6 @@ const Dashboard = () => {
               Welcome, {user?.firstName} 👋
             </h1>
 
-            <p className="mt-3 max-w-3xl text-blue-100">
-              Welcome to the Employee Management System dashboard. Manage employees, payroll, attendance, recruitment and reports from one place.
-            </p>
-
             <div className="mt-5 flex flex-wrap gap-3">
 
               <span className="rounded-xl bg-white/20 px-4 py-2 text-sm">
