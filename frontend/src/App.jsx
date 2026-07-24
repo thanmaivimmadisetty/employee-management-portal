@@ -18,7 +18,6 @@ import Holidays from './pages/Holidays';
 import Reports from './pages/Reports';
 import EmployeeOnboarding from './pages/EmployeeOnboarding';
 import OnboardingRequests from './pages/OnboardingRequests';
-import Tracker from './pages/Tracker';
 import Tasks from "./pages/Tasks";
 import TrackerDashboard from "./pages/TrackerDashboard";
 
@@ -94,11 +93,6 @@ function App() {
           {/* Reports */}
           <Route element={<Layout title="Analytical Reports" />}>
             <Route path="/reports" element={<Reports />} />
-          </Route>
-
-          {/* Daily Work Tracker */}
-          <Route element={<Layout title="Daily Work Tracker" />}>
-            <Route path="/tracker" element={<Tracker />} />
           </Route>
 
           {/* HR/Admin Onboarding Requests */}
