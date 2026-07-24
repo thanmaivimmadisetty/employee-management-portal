@@ -29,21 +29,32 @@ export default function CreateTaskModal({
     }
   }, [isOpen]);
 
-  const loadEmployees = async () => {
-    try {
-      const token = localStorage.getItem("emp_portal_token");
+const loadEmployees = async () => {
+  try {
+    const token = localStorage.getItem("emp_portal_token");
 
-      const res = await axios.get(`${API}/api/employees`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const res = await axios.get(`${API}/api/employees`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
+    console.log("Employees API:", res.data);
+
+    if (Array.isArray(res.data)) {
       setEmployees(res.data);
-    } catch (err) {
-      console.error(err);
+    } else if (Array.isArray(res.data.data)) {
+      setEmployees(res.data.data);
+    } else if (Array.isArray(res.data.employees)) {
+      setEmployees(res.data.employees);
+    } else {
+      setEmployees([]);
     }
-  };
+  } catch (err) {
+    console.error("Employee Loading Error:", err);
+    setEmployees([]);
+  }
+};
 
   const handleChange = (e) => {
     setForm({
@@ -132,20 +143,27 @@ export default function CreateTaskModal({
             onChange={handleChange}
           />
 
-          <select
-            className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
-            name="assigned_to"
-            value={form.assigned_to}
-            onChange={handleChange}
-          >
-            <option value="">Assign Employee</option>
+        <select
+  className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
+  name="assigned_to"
+  value={form.assigned_to}
+  onChange={handleChange}
+>
+  <option value="">Assign Employee</option>
 
-            {employees.map((emp) => (
-              <option key={emp.id} value={emp.id}>
-                {emp.firstName} {emp.lastName}
-              </option>
-            ))}
-          </select>
+  {employees.length > 0 ? (
+    employees.map((emp) => (
+      <option
+        key={emp.id || emp.employeeId}
+        value={emp.id || emp.employeeId}
+      >
+        {emp.firstName || emp.first_name} {emp.lastName || emp.last_name}
+      </option>
+    ))
+  ) : (
+    <option disabled>No Employees Found</option>
+  )}
+</select>
 
           <select
             className="border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#1AA7EC]"
