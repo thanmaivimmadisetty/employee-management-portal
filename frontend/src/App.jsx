@@ -34,9 +34,9 @@ function App() {
           <Route path="/onboarding" element={<EmployeeOnboarding />} />
 
           {/* Dashboard */}
-          <Route element={<Layout title="Overview" />}>
-            <Route path="/" element={<Dashboard />} />
-          </Route>
+          <Route element={<Layout title="ZaynLevi Technologies" />}>
+  <Route path="/" element={<Dashboard />} />
+</Route>
 
           {/* Employees */}
           <Route element={<Layout title="Employees" />}>
