@@ -95,12 +95,6 @@ const Sidebar = () => {
       roles: ["Admin", "HR"],
     },
     {
-      name: "Tracker",
-      path: "/tracker",
-      icon: ClipboardList,
-      roles: ["Admin", "HR", "Manager", "Employee"],
-    },
-    {
       name: "Tracker Dashboard",
       path: "/tracker-dashboard",
       icon: Activity,
@@ -134,12 +128,8 @@ const Sidebar = () => {
           <div>
 
             <h1 className="text-xl font-extrabold tracking-wide">
-              EMP PORTAL
-            </h1>
-
-            <p className="text-xs text-blue-200">
               Employee Management System
-            </p>
+            </h1>
 
           </div>
 
