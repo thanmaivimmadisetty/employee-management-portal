@@ -85,35 +85,71 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-<label>Password</label>
+  {/* Email */}
+  <div>
 
-<div className="relative">
-  <Lock className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
+    <label className="block text-sm font-semibold text-[#0B4F8A] mb-2">
+      Email Address
+    </label>
 
-  <input
-    type="password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    placeholder="••••••••"
-    className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
-  />
-</div>
+    <div className="relative">
 
-<div className="flex justify-end mt-2">
+      <Mail className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
+
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="name@company.com"
+        className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
+      />
+
+    </div>
+
+  </div>
+
+  {/* Password */}
+  <div>
+
+    <label className="block text-sm font-semibold text-[#0B4F8A] mb-2">
+      Password
+    </label>
+
+    <div className="relative">
+
+      <Lock className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
+
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="••••••••"
+        className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
+      />
+
+    </div>
+
+    <div className="flex justify-end mt-2">
+      <button
+        type="button"
+        onClick={() => navigate("/forgot-password")}
+        className="text-sm text-[#16A5E8] hover:text-[#0B4F8A] hover:underline font-medium"
+      >
+        Forgot Password?
+      </button>
+    </div>
+
+  </div>
+
   <button
-    type="button"
-    onClick={() => navigate("/forgot-password")}
-    className="text-sm text-[#16A5E8] hover:text-[#0B4F8A] hover:underline font-medium"
+    type="submit"
+    disabled={submitting}
+    className="w-full py-3 bg-[#16A5E8] hover:bg-[#0B4F8A] disabled:opacity-60 text-white rounded-xl font-bold transition-all duration-300 shadow-lg"
   >
-    Forgot Password?
+    {submitting ? "Signing In..." : "Sign In"}
   </button>
-</div>
 
-<button type="submit">
-  Sign In
-</button>
-
-          </form>
+</form>
 
           <div className="mt-8 pt-6 border-t border-gray-200">
 
