@@ -184,10 +184,9 @@ const Dashboard = () => {
 
       </div>
 
-      {/* KPI Statistics */}
+     {/* KPI Statistics */}
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
         <StatCard
           title="Employees"
           value={stats?.totalEmployees ?? 0}
@@ -231,10 +230,6 @@ const Dashboard = () => {
           }
           description="Today's Attendance"
         />
-
-      </div>
-
-
       </div>
 
     </div>
