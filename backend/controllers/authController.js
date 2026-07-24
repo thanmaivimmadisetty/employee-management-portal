@@ -150,3 +150,43 @@ exports.getMe = async (req, res) => {
     });
   }
 };
+exports.resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Email and password are required"
+    });
+  }
+
+  try {
+    const [rows] = await db.query(
+      "SELECT id FROM employees WHERE email = ?",
+      [email]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        message: "Email not found"
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await db.query(
+      "UPDATE employees SET password = ? WHERE email = ?",
+      [hashedPassword, email]
+    );
+
+    res.json({
+      message: "Password updated successfully"
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Unable to reset password"
+    });
+  }
+};
