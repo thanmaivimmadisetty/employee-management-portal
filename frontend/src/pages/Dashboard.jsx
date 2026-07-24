@@ -234,46 +234,7 @@ const Dashboard = () => {
 
       </div>
 
-      {/* Charts */}
-
-      <div className="grid gap-6 lg:grid-cols-2">
-
-        {/* Department Headcount */}
-
-        <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-lg">
-
-          <h3 className="mb-6 text-xl font-bold text-[#0B4F8A]">
-            Department Headcount
-          </h3>
-
-          <ResponsiveContainer width="100%" height={300}>
-
-            <BarChart data={stats?.departmentHeadcounts}>
-
-              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
-
-              <XAxis
-                dataKey="name"
-                tick={{ fill: "#64748B", fontSize: 12 }}
-              />
-
-              <YAxis
-                tick={{ fill: "#64748B", fontSize: 12 }}
-              />
-
-              <Tooltip />
-
-              <Bar
-                dataKey="headcount"
-                fill="#1AA7EC"
-                radius={[8, 8, 0, 0]}
-              />
-
-            </BarChart>
-
-          </ResponsiveContainer>
-
-        </div>
+    
 
         {/* Monthly Payroll */}
 
