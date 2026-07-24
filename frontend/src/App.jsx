@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 
 // Import Pages
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import Departments from './pages/Departments';
@@ -20,6 +21,7 @@ import OnboardingRequests from './pages/OnboardingRequests';
 import Tracker from './pages/Tracker';
 import Tasks from "./pages/Tasks";
 import TrackerDashboard from "./pages/TrackerDashboard";
+
 function App() {
   return (
     <Router>
@@ -28,6 +30,7 @@ function App() {
 
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/onboarding" element={<EmployeeOnboarding />} />
 
           {/* Dashboard */}
@@ -49,12 +52,15 @@ function App() {
           <Route element={<Layout title="Attendance Logs" />}>
             <Route path="/attendance" element={<Attendance />} />
           </Route>
+
+          {/* Tracker Dashboard */}
           <Route element={<Layout title="Tracker Dashboard" />}>
-  <Route
-    path="/tracker-dashboard"
-    element={<TrackerDashboard />}
-  />
-</Route>
+            <Route
+              path="/tracker-dashboard"
+              element={<TrackerDashboard />}
+            />
+          </Route>
+
           {/* Leaves */}
           <Route element={<Layout title="Leaves Management" />}>
             <Route path="/leaves" element={<Leaves />} />
@@ -74,9 +80,12 @@ function App() {
           <Route element={<Layout title="Performance Reviews" />}>
             <Route path="/performance" element={<Performance />} />
           </Route>
-<Route element={<Layout title="Task Management" />}>
-  <Route path="/tasks" element={<Tasks />} />
-</Route>
+
+          {/* Task Management */}
+          <Route element={<Layout title="Task Management" />}>
+            <Route path="/tasks" element={<Tasks />} />
+          </Route>
+
           {/* Holidays */}
           <Route element={<Layout title="Holiday Calendar" />}>
             <Route path="/holidays" element={<Holidays />} />
@@ -86,9 +95,12 @@ function App() {
           <Route element={<Layout title="Analytical Reports" />}>
             <Route path="/reports" element={<Reports />} />
           </Route>
-         <Route element={<Layout title="Daily Work Tracker" />}>
-  <Route path="/tracker" element={<Tracker />} />
-</Route>
+
+          {/* Daily Work Tracker */}
+          <Route element={<Layout title="Daily Work Tracker" />}>
+            <Route path="/tracker" element={<Tracker />} />
+          </Route>
+
           {/* HR/Admin Onboarding Requests */}
           <Route element={<Layout title="Employee Onboarding Requests" />}>
             <Route
