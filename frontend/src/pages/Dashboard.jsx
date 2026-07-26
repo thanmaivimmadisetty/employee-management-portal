@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
-  const { user , setUser } = useAuth();
+  const { user } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [dbConnected, setDbConnected] = useState(true);
@@ -25,7 +25,7 @@ const Dashboard = () => {
     checkedOut: false,
     log: null,
   });
-const [selectedFile, setSelectedFile] = useState(null);
+
 const [uploading, setUploading] = useState(false);
 useEffect(() => {
   const loadDashboard = async () => {
@@ -70,17 +70,16 @@ useEffect(() => {
       alert(err.response?.data?.message || "Check Out Failed");
     }
   };
-const handlePhotoUpload = async () => {
-  if (!selectedFile) {
-    alert("Please select an image.");
-    return;
-  }
+const handlePhotoUpload = async (event) => {
+  const file = event.target.files[0];
+
+  if (!file) return;
 
   try {
     setUploading(true);
 
     const formData = new FormData();
-    formData.append("profilePhoto", selectedFile);
+    formData.append("profilePhoto", file);
 
     const res = await api.post(
       `/employees/${user.id}/profile-photo`,
@@ -92,25 +91,7 @@ const handlePhotoUpload = async () => {
       }
     );
 
-    const updatedUser = {
-      ...user,
-      profilePhoto: res.data.profilePhoto,
-    };
-
-    setUser(updatedUser);
-    localStorage.setItem(
-      "emp_portal_user",
-      JSON.stringify(updatedUser)
-    );
-
-    alert("Profile photo updated successfully!");
-  } catch (err) {
-    console.error(err);
-    alert("Failed to upload image.");
-  } finally {
-    setUploading(false);
-  }
-};
+    
   if (loading) return <div className="flex h-screen items-center justify-center"><h2 className="text-2xl font-bold text-[#0B4F8A]">Loading Dashboard...</h2></div>;
 
   return (
