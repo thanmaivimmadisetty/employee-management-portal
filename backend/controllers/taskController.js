@@ -27,7 +27,36 @@ exports.getTasks = async (req, res) => {
     });
   }
 };
+// ================= MY TASKS =================
+exports.getMyTasks = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `
+      SELECT
+        id,
+        title,
+        project_name,
+        priority,
+        status,
+        due_date
+      FROM tasks
+      WHERE assigned_to = ?
+      ORDER BY created_at DESC
+      `,
+      [req.user.id]
+    );
 
+    res.json(rows);
+
+  } catch (err) {
+    console.error("GET MY TASKS ERROR:", err);
+
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch employee tasks"
+    });
+  }
+};
 // ================= CREATE TASK =================
 exports.createTask = async (req, res) => {
 
