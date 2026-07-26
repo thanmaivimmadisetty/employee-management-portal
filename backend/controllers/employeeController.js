@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
+const path = require('path');
 
 exports.getAllEmployees = async (req, res) => {
   try {
@@ -129,5 +130,32 @@ exports.deleteEmployee = async (req, res) => {
   } catch (error) {
     console.error('Delete employee error:', error);
     res.status(500).json({ message: 'Server error deleting employee', error: error.message });
+  }
+};
+exports.uploadProfilePhoto = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image uploaded' });
+    }
+
+    const employeeId = req.params.id;
+
+    const imagePath = `/uploads/${req.file.filename}`;
+
+    await db.query(
+      'UPDATE employees SET profile_photo = ? WHERE id = ?',
+      [imagePath, employeeId]
+    );
+
+    res.json({
+      message: 'Profile photo uploaded successfully',
+      profilePhoto: imagePath
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Error uploading profile photo'
+    });
   }
 };
