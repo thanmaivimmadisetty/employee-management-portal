@@ -175,15 +175,29 @@ const Sidebar = () => {
 
         <div className="bg-[#0A3D6E] rounded-xl p-4 mb-4 shadow-md">
 
-          <p className="font-semibold truncate">
-            {user.firstName} {user.lastName}
-          </p>
+  <div className="flex flex-col items-center">
 
-          <p className="text-xs uppercase tracking-wider text-blue-200 mt-1">
-            {role}
-          </p>
+    <img
+      src={
+        user?.profilePhoto
+          ? `${import.meta.env.VITE_API_URL}/${user.profilePhoto}`
+          : `https://ui-avatars.com/api/?name=${user.firstName}`
+      }
+      alt="Profile"
+      className="w-20 h-20 rounded-full border-4 border-white object-cover mb-3"
+    />
 
-        </div>
+    <p className="font-semibold truncate">
+      {user.firstName} {user.lastName}
+    </p>
+
+    <p className="text-xs uppercase tracking-wider text-blue-200 mt-1">
+      {role}
+    </p>
+
+  </div>
+
+</div>
 
         <button
           onClick={logout}
