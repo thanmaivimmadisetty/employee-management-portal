@@ -109,25 +109,29 @@ const Login = () => {
   </div>
 
   {/* Password */}
-  <div>
+  <div className="relative">
+  <Lock className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
 
-    <label className="block text-sm font-semibold text-[#0B4F8A] mb-2">
-      Password
-    </label>
+  <input
+    type={showPassword ? "text" : "password"}
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    placeholder="••••••••"
+    className="w-full pl-11 pr-12 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
+  />
 
-    <div className="relative">
-
-      <Lock className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
-
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="••••••••"
-        className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
-      />
-
-    </div>
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-3.5 text-gray-500 hover:text-[#0B4F8A]"
+  >
+    {showPassword ? (
+      <EyeOff className="w-5 h-5" />
+    ) : (
+      <Eye className="w-5 h-5" />
+    )}
+  </button>
+</div>
 
     <div className="flex justify-end mt-2">
       <button
