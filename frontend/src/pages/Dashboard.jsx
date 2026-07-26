@@ -154,7 +154,7 @@ useEffect(() => {
 >
   + Create Task
 </button>
-
+        </div>
         <div className="rounded-2xl bg-white shadow-lg border-l-4 border-purple-500 p-6">
           <div className="flex items-center gap-3 mb-4">
             <CalendarDays className="w-8 h-8 text-purple-600"/>
