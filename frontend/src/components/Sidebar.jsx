@@ -179,10 +179,10 @@ const Sidebar = () => {
 
     <img
       src={
-        user?.profilePhoto
-          ? `${import.meta.env.VITE_API_URL}/${user.profilePhoto}`
-          : `https://ui-avatars.com/api/?name=${user.firstName}`
-      }
+  user?.profilePhoto
+    ? `https://employee-management-portal-2.onrender.com${user.profilePhoto}`
+    : `https://ui-avatars.com/api/?name=${user.firstName}`
+}
       alt="Profile"
       className="w-20 h-20 rounded-full border-4 border-white object-cover mb-3"
     />
