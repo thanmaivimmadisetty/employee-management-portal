@@ -20,11 +20,27 @@ const notificationController = require('../controllers/notificationController');
 const onboardingController = require('../controllers/onboardingController');
 const trackerController = require('../controllers/trackerController');
 const activityController=require("../controllers/activityController");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
 
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"));
+    }
+  },
+});
 
 router.post('/auth/login', authController.login);
-router.post('/auth/login', authController.login);
-
 router.post(
   '/auth/reset-password',
   authController.resetPassword
