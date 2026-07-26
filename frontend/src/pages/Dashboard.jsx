@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [dbConnected, setDbConnected] = useState(true);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
+  const [myTasks, setMyTasks] = useState([]);
   const [todayStatus, setTodayStatus] = useState({
     checkedIn: false,
     checkedOut: false,
@@ -29,9 +29,12 @@ const Dashboard = () => {
 useEffect(() => {
   const loadDashboard = async () => {
     try {
-      // Only load data that every logged-in employee can access
       const attendance = await api.get("/attendance/today");
+      const tasks = await api.get("/tasks/my");
+
       setTodayStatus(attendance.data);
+      setMyTasks(tasks.data);
+
       setDbConnected(true);
     } catch (error) {
       console.error("Dashboard loading failed:", error);
@@ -125,9 +128,32 @@ useEffect(() => {
             <ListTodo className="w-8 h-8 text-red-600"/>
             <h3 className="text-lg font-bold text-red-600">Task Summary</h3>
           </div>
-          <p className="text-sm text-gray-600 mb-4">Create and manage employee tasks.</p>
-          <button onClick={() => setIsTaskModalOpen(true)} className="w-full bg-[#1AA7EC] hover:bg-[#0B4F8A] text-white py-2 rounded-xl">+ Create Task</button>
-        </div>
+          <div className="space-y-2 mb-4">
+  {myTasks.length > 0 ? (
+    myTasks.slice(0, 5).map((task) => (
+      <div
+        key={task.id}
+        className="border rounded-lg p-2 bg-gray-50"
+      >
+        <p className="font-semibold">{task.title}</p>
+        <p className="text-xs text-gray-500">
+          Status: {task.status}
+        </p>
+      </div>
+    ))
+  ) : (
+    <p className="text-sm text-gray-500">
+      No tasks assigned.
+    </p>
+  )}
+</div>
+
+<button
+  onClick={() => setIsTaskModalOpen(true)}
+  className="w-full bg-[#1AA7EC] hover:bg-[#0B4F8A] text-white py-2 rounded-xl"
+>
+  + Create Task
+</button>
 
         <div className="rounded-2xl bg-white shadow-lg border-l-4 border-purple-500 p-6">
           <div className="flex items-center gap-3 mb-4">
