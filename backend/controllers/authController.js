@@ -84,18 +84,19 @@ await db.query(
   ]
 );
 
-    res.json({
-      token,
-      user: {
-        id: employee.id,
-        email: employee.email,
-        firstName: employee.first_name,
-        lastName: employee.last_name,
-        roleId: employee.role_id,
-        roleName: employee.roleName,
-        departmentId: employee.department_id
-      }
-    });
+   res.json({
+  token,
+  user: {
+    id: employee.id,
+    employeeId: employee.employee_id,
+    email: employee.email,
+    firstName: employee.first_name,
+    lastName: employee.last_name,
+    roleId: employee.role_id,
+    roleName: employee.roleName,
+    departmentId: employee.department_id
+  }
+});
 
   } catch (error) {
     console.error('Login error:', error);
@@ -112,6 +113,7 @@ exports.getMe = async (req, res) => {
     const [rows] = await db.query(
       `SELECT
         e.id,
+        e.employee_id,
         e.first_name,
         e.last_name,
         e.email,
