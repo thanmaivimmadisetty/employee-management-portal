@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 
 const { authenticateToken, authorizeRoles } = require('../middleware/auth');
 
@@ -18,6 +20,11 @@ const notificationController = require('../controllers/notificationController');
 const onboardingController = require('../controllers/onboardingController');
 const trackerController = require('../controllers/trackerController');
 const activityController=require("../controllers/activityController");
+const onboardingController = require('../controllers/onboardingController');
+const trackerController = require('../controllers/trackerController');
+const activityController = require("../controllers/activityController");
+
+router.post('/auth/login', authController.login);
 router.post('/auth/login', authController.login);
 
 router.post(
@@ -36,6 +43,12 @@ router.get('/employees', authenticateToken, authorizeRoles('Admin', 'HR', 'Manag
 router.get('/employees/:id', authenticateToken, employeeController.getEmployeeById);
 router.post('/employees', authenticateToken, authorizeRoles('Admin', 'HR'), employeeController.createEmployee);
 router.put('/employees/:id', authenticateToken, authorizeRoles('Admin', 'HR'), employeeController.updateEmployee);
+router.post(
+  '/employees/:id/profile-photo',
+  authenticateToken,
+  upload.single('profilePhoto'),
+  employeeController.uploadProfilePhoto
+);
 router.delete('/employees/:id', authenticateToken, authorizeRoles('Admin', 'HR'), employeeController.deleteEmployee);
 
 // --- Department Routes ---
