@@ -86,16 +86,17 @@ await db.query(
 
    res.json({
   token,
-  user: {
-    id: employee.id,
-    employeeId: employee.employee_id,
-    email: employee.email,
-    firstName: employee.first_name,
-    lastName: employee.last_name,
-    roleId: employee.role_id,
-    roleName: employee.roleName,
-    departmentId: employee.department_id
-  }
+user: {
+  id: employee.id,
+  employeeId: employee.employee_id,
+  email: employee.email,
+  firstName: employee.first_name,
+  lastName: employee.last_name,
+  roleId: employee.role_id,
+  roleName: employee.roleName,
+  departmentId: employee.department_id,
+  profilePhoto: employee.profile_photo
+}
 });
 
   } catch (error) {
