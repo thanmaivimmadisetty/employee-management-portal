@@ -6,7 +6,7 @@ exports.getAllEmployees = async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT e.id, e.first_name as firstName, e.last_name as lastName, e.email, e.role_id as roleId, e.department_id as departmentId, 
-              e.joining_date as joiningDate, e.status, e.salary,e.profile_photo as profilephoto, r.name as roleName, d.name as departmentName
+              e.joining_date as joiningDate, e.status, e.salary,e.profile_photo AS profilephoto, r.name as roleName, d.name as departmentName
        FROM employees e
        JOIN roles r ON e.role_id = r.id
        LEFT JOIN departments d ON e.department_id = d.id`
@@ -22,7 +22,7 @@ exports.getEmployeeById = async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT e.id, e.first_name as firstName, e.last_name as lastName, e.email, e.role_id as roleId, e.department_id as departmentId, 
-              e.joining_date as joiningDate, e.status, e.salary, e.profile_photo as profilephoto, r.name as roleName, d.name as departmentName
+              e.joining_date as joiningDate, e.status, e.salary, e.profile_photo AS profilephoto, r.name as roleName, d.name as departmentName
        FROM employees e
        JOIN roles r ON e.role_id = r.id
        LEFT JOIN departments d ON e.department_id = d.id
