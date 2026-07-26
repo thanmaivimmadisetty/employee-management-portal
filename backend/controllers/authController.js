@@ -248,3 +248,78 @@ exports.forgotPassword = async (req, res) => {
     });
   }
 };
+exports.verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM password_reset_otp
+       WHERE email=? AND otp=? AND expires_at > NOW()`,
+      [email, otp]
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired OTP",
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "OTP verified successfully",
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM password_reset_otp
+       WHERE email=? AND otp=? AND expires_at > NOW()`,
+      [email, otp]
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired OTP",
+      });
+    }
+
+    const bcrypt = require("bcryptjs");
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      "UPDATE employees SET password=? WHERE email=?",
+      [hashedPassword, email]
+    );
+
+    await pool.query(
+      "DELETE FROM password_reset_otp WHERE email=?",
+      [email]
+    );
+
+    return res.json({
+      success: true,
+      message: "Password updated successfully",
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
