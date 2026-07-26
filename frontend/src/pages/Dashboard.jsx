@@ -80,7 +80,7 @@ const handlePhotoUpload = async (event) => {
     const formData = new FormData();
     formData.append("profilePhoto", file);
 
-    await api.post(
+    const res = await api.post(
       `/employees/${user.id}/profile-photo`,
       formData,
       {
@@ -89,6 +89,18 @@ const handlePhotoUpload = async (event) => {
         },
       }
     );
+
+    const updatedUser = {
+      ...user,
+      profilePhoto: res.data.profilePhoto,
+    };
+
+    localStorage.setItem(
+      "emp_portal_user",
+      JSON.stringify(updatedUser)
+    );
+
+    alert("Photo uploaded successfully!");
 
     window.location.reload();
   } catch (err) {
@@ -118,7 +130,7 @@ if (loading) return <div className="flex h-screen items-center justify-center"><
   <img
     src={
       user?.profilePhoto
-        ? `${import.meta.env.VITE_API_URL}${user.profilePhoto}`
+        ? `https://employee-management-portal-2.onrender.com${user.profilePhoto}`
         : `https://ui-avatars.com/api/?name=${user?.firstName || "User"}`
     }
     alt="Profile"
