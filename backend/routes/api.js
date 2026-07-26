@@ -20,7 +20,6 @@ const notificationController = require('../controllers/notificationController');
 const onboardingController = require('../controllers/onboardingController');
 const trackerController = require('../controllers/trackerController');
 const activityController=require("../controllers/activityController");
-const onboardingController = require('../controllers/onboardingController');
 const trackerController = require('../controllers/trackerController');
 const activityController = require("../controllers/activityController");
 
