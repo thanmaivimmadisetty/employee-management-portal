@@ -82,13 +82,34 @@ useEffect(() => {
 
       <div className="rounded-3xl bg-gradient-to-r from-[#0B4F8A] via-[#0A3D6E] to-[#1AA7EC] p-8 text-white shadow-xl">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Welcome, {user?.firstName || user?.name || "User"} 👋</h1>
-            <p className="mt-2 text-blue-100">
-  Employee ID: {user?.id ? `EMP${String(user.id).padStart(3, "0")}` : "N/A"}
-</p>
-            <p className="mt-2 text-blue-100">Employee Dashboard</p>
-          </div>
+         <div className="flex items-center gap-5">
+
+  <img
+    src={
+      user?.profilePhoto
+        ? `${import.meta.env.VITE_API_URL}/${user.profilePhoto}`
+        : "https://ui-avatars.com/api/?name=" +
+          (user?.firstName || "User")
+    }
+    alt="Profile"
+    className="w-20 h-20 rounded-full border-4 border-white object-cover"
+  />
+
+  <div>
+    <h1 className="text-3xl font-bold">
+      Welcome, {user?.firstName || user?.name || "User"} 👋
+    </h1>
+
+    <p className="mt-2 text-blue-100">
+      Employee ID: {user?.id ? `EMP${String(user.id).padStart(3, "0")}` : "N/A"}
+    </p>
+
+    <p className="mt-2 text-blue-100">
+      Employee Dashboard
+    </p>
+  </div>
+
+</div>
           <div className="rounded-2xl bg-white/10 p-6">
             <div className="flex items-center gap-3">
               <Clock className="w-8 h-8" />
