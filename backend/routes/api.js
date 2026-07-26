@@ -21,6 +21,7 @@ const onboardingController = require('../controllers/onboardingController');
 const trackerController = require('../controllers/trackerController');
 const activityController=require("../controllers/activityController");
 
+
 router.post('/auth/login', authController.login);
 router.post('/auth/login', authController.login);
 
