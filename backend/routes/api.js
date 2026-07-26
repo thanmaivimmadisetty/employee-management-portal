@@ -40,18 +40,35 @@ const upload = multer({
   },
 });
 
+// ---------- Authentication Routes ----------
+
+// Login
 router.post('/auth/login', authController.login);
+
+// Forgot Password - Send OTP
+router.post(
+  '/auth/forgot-password',
+  authController.forgotPassword
+);
+
+// Verify OTP
+router.post(
+  '/auth/verify-otp',
+  authController.verifyOTP
+);
+
+// Reset Password
 router.post(
   '/auth/reset-password',
   authController.resetPassword
 );
 
+// Logged In User
 router.get(
   '/auth/me',
   authenticateToken,
   authController.getMe
 );
-
 // --- Employee Routes ---
 router.get('/employees', authenticateToken, authorizeRoles('Admin', 'HR', 'Manager'), employeeController.getAllEmployees);
 router.get('/employees/:id', authenticateToken, employeeController.getEmployeeById);
