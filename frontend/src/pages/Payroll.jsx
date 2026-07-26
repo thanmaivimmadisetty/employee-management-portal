@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import api from '../utils/api';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
-import { DollarSign, Printer, PlusCircle, ShieldAlert, Download, Eye, Calendar } from 'lucide-react';
+import { Printer, PlusCircle, ShieldAlert, Download, Eye, Calendar } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Payroll = () => {
@@ -212,19 +212,19 @@ const Payroll = () => {
       doc.line(14, 76, 196, 76);
 
       doc.text(`Base Salary Earnings:`, 14, 86);
-      doc.text(`$${base.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 86);
+      doc.text(`${base.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 86);
 
       doc.text(`Allowances (+):`, 14, 94);
-      doc.text(`+$${allow.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 94);
+      doc.text(`+${allow.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 94);
 
       doc.text(`Deductions (-):`, 14, 102);
-      doc.text(`-$${deduct.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 102);
+      doc.text(`-${deduct.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 102);
 
       doc.line(14, 108, 196, 108);
 
       doc.setFontSize(13);
       doc.text(`NET PAYOUT:`, 14, 118);
-      doc.text(`$${net.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 118);
+      doc.text(`${net.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 160, 118);
 
       doc.save(`Payslip-${pay.employeeName.replace(/\s+/g, '-')}-${monthLabel.replace(/\s+/g, '-')}.pdf`);
     } catch (err) {
@@ -319,10 +319,10 @@ const Payroll = () => {
                   {isHRorAdmin && <td className="py-4 px-6 font-semibold text-slate-200">{pay.employeeName}</td>}
                   {isHRorAdmin && <td className="py-4 px-6 text-slate-400">{pay.departmentName || 'Unassigned'}</td>}
                   <td className="py-4 px-6 text-slate-300 font-semibold whitespace-nowrap">{getMonthLabel(pay.paymentDate)}</td>
-                  <td className="py-4 px-6 text-slate-400">${parseFloat(pay.baseSalary).toLocaleString('en-US')}</td>
-                  <td className="py-4 px-6 text-emerald-400">+${parseFloat(pay.allowances).toLocaleString('en-US')}</td>
-                  <td className="py-4 px-6 text-red-400">-${parseFloat(pay.deductions).toLocaleString('en-US')}</td>
-                  <td className="py-4 px-6 font-bold text-slate-200">${parseFloat(pay.netSalary).toLocaleString('en-US')}</td>
+                  <td className="py-4 px-6 text-slate-400">{parseFloat(pay.baseSalary).toLocaleString('en-US')}</td>
+                  <td className="py-4 px-6 text-emerald-400">+{parseFloat(pay.allowances).toLocaleString('en-US')}</td>
+                  <td className="py-4 px-6 text-red-400">-{parseFloat(pay.deductions).toLocaleString('en-US')}</td>
+                  <td className="py-4 px-6 font-bold text-slate-200">{parseFloat(pay.netSalary).toLocaleString('en-US')}</td>
                   <td className="py-4 px-6 text-slate-400">{pay.paymentDate || <span className="text-slate-600">Pending</span>}</td>
                   <td className="py-4 px-6">
                     <span className={`px-2 py-0.5 rounded font-extrabold text-[10px] ${
@@ -400,7 +400,7 @@ const Payroll = () => {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Base Salary ($)</label>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Base Salary</label>
             <input
               type="number"
               value={baseSalary}
@@ -412,7 +412,7 @@ const Payroll = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Allowances ($)</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Allowances</label>
               <input
                 type="number"
                 value={allowances}
@@ -422,7 +422,7 @@ const Payroll = () => {
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Deductions ($)</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Deductions</label>
               <input
                 type="number"
                 value={deductions}
@@ -436,7 +436,7 @@ const Payroll = () => {
           <div className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 text-xs flex justify-between items-center mt-6">
             <span className="font-bold text-slate-400">Calculated Net Payout:</span>
             <span className="text-lg font-black text-brand-400">
-              ${((parseFloat(baseSalary || 0) + parseFloat(allowances || 0)) - parseFloat(deductions || 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              {((parseFloat(baseSalary || 0) + parseFloat(allowances || 0)) - parseFloat(deductions || 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </span>
           </div>
 
@@ -489,19 +489,19 @@ const Payroll = () => {
             <div className="pt-4 border-t border-dashed border-slate-800 space-y-2 text-xs text-slate-300">
               <div className="flex justify-between">
                 <span>Base Salary Earnings:</span>
-                <span>${parseFloat(selectedSlip.baseSalary).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                <span>{parseFloat(selectedSlip.baseSalary).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>
               <div className="flex justify-between text-emerald-400">
                 <span>Allowances (+):</span>
-                <span>+${parseFloat(selectedSlip.allowances).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                <span>+{parseFloat(selectedSlip.allowances).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>
               <div className="flex justify-between text-red-400">
                 <span>Deductions (-):</span>
-                <span>-${parseFloat(selectedSlip.deductions).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                <span>-{parseFloat(selectedSlip.deductions).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>
               <div className="flex justify-between pt-3 border-t border-dashed border-slate-800 font-extrabold text-sm text-slate-100">
                 <span>NET PAYOUT:</span>
-                <span className="text-brand-400">${parseFloat(selectedSlip.netSalary).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                <span className="text-brand-400">{parseFloat(selectedSlip.netSalary).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
               </div>
             </div>
 
