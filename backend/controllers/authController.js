@@ -114,7 +114,7 @@ exports.getMe = async (req, res) => {
     const [rows] = await db.query(
       `SELECT
         e.id,
-        e.employee_id,
+        e.id AS employeeId,
         e.first_name,
         e.last_name,
         e.email,
