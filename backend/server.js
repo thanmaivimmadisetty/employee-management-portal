@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const path = require('path');
+const fs = require('fs');
 const apiRoutes = require('./routes/api');
 const taskRoutes = require('./routes/taskRoutes');
 const jiraRoutes = require("./routes/jiraRoutes");
@@ -12,7 +14,15 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Create uploads folder if it doesn't exist
+const uploadDir = path.join(__dirname, 'uploads');
 
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Serve uploaded images
+app.use('/uploads', express.static(uploadDir));
 // Health Check
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy', timestamp: new Date() });
