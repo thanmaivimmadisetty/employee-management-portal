@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import logo from "../logo.png";
 import {
   LayoutDashboard,
   Users,
@@ -119,11 +120,11 @@ const Sidebar = () => {
 
         <div className="flex items-center gap-3">
 
-          <div className="w-12 h-12 rounded-xl bg-[#1AA7EC] flex items-center justify-center shadow-lg">
-
-            <Briefcase className="w-6 h-6 text-white" />
-
-          </div>
+         <img
+  src={logo}
+  alt="ZaynLevi Logo"
+  className="w-12 h-12 rounded-xl bg-white p-1 object-contain shadow-lg"
+/>
 
           <div>
 
