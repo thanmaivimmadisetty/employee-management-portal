@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Briefcase, Lock, Mail, AlertCircle } from 'lucide-react';
+import { Briefcase, Lock, Mail, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
@@ -9,6 +9,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState('false');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -97,13 +98,24 @@ const Login = () => {
       <Mail className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
 
       <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="name@company.com"
-        className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
-      />
+  type={showPassword ? "text" : "password"}
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  placeholder="••••••••"
+  className="w-full pl-11 pr-12 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
+/>
 
+<button
+  type="button"
+  onClick={() => setShowPassword(!showPassword)}
+  className="absolute right-3 top-3 text-gray-500 hover:text-[#0B4F8A]"
+>
+  {showPassword ? (
+    <EyeOff className="w-5 h-5" />
+  ) : (
+    <Eye className="w-5 h-5" />
+  )}
+</button>
     </div>
 
   </div>
