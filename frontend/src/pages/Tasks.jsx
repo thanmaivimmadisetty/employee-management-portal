@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import TaskTable from "../components/TaskTable";
 
@@ -97,6 +97,14 @@ export default function Tasks() {
     }
   };
 
+  // Called after a task's status is changed (e.g. from within TaskTable) so the
+  // task immediately re-renders under the correct section without a page refresh.
+  const handleTaskStatusChange = (taskId, newStatus) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
+    );
+  };
+
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(search.toLowerCase())
   );
@@ -105,6 +113,23 @@ export default function Tasks() {
   const done = tasks.filter((t) => t.status === "Done").length;
   const progress = tasks.filter((t) => t.status === "In Progress").length;
   const todo = total - done - progress;
+
+  // Split the (search-filtered) tasks into their three status sections.
+  // Anything that isn't explicitly "In Progress" or "Done" is treated as "To Do",
+  // matching the same logic used for the summary cards above.
+  const todoTasks = useMemo(
+    () => filteredTasks.filter((t) => t.status !== "In Progress" && t.status !== "Done"),
+    [filteredTasks]
+  );
+  const inProgressTasks = useMemo(
+    () => filteredTasks.filter((t) => t.status === "In Progress"),
+    [filteredTasks]
+  );
+  const doneTasks = useMemo(
+    () => filteredTasks.filter((t) => t.status === "Done"),
+    [filteredTasks]
+  );
+
   return (
   <div className="min-h-screen bg-blue-50 p-6">
 
@@ -271,7 +296,49 @@ export default function Tasks() {
 
     </div>
 
-    <TaskTable tasks={filteredTasks} />
+    <div className="space-y-10">
+
+      <section>
+        <h2 className="text-2xl font-bold text-orange-600 mb-3">To Do</h2>
+        {todoTasks.length === 0 ? (
+          <p className="text-gray-500 bg-white rounded-xl shadow p-5">No tasks available.</p>
+        ) : (
+          <TaskTable
+            tasks={todoTasks}
+            onStatusChange={handleTaskStatusChange}
+            onTaskUpdate={loadTasks}
+          />
+        )}
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-bold text-[#0B4F8A] mb-3">In Progress</h2>
+        {inProgressTasks.length === 0 ? (
+          <p className="text-gray-500 bg-white rounded-xl shadow p-5">No tasks available.</p>
+        ) : (
+          <TaskTable
+            tasks={inProgressTasks}
+            onStatusChange={handleTaskStatusChange}
+            onTaskUpdate={loadTasks}
+          />
+        )}
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-bold text-green-600 mb-3">Done</h2>
+        {doneTasks.length === 0 ? (
+          <p className="text-gray-500 bg-white rounded-xl shadow p-5">No tasks available.</p>
+        ) : (
+          <TaskTable
+            tasks={doneTasks}
+            onStatusChange={handleTaskStatusChange}
+            onTaskUpdate={loadTasks}
+          />
+        )}
+      </section>
+
+    </div>
+
   </div>
 );
 }
