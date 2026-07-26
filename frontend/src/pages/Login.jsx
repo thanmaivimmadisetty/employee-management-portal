@@ -93,30 +93,18 @@ const Login = () => {
       Email Address
     </label>
 
-    <div className="relative">
+   
+  <div className="relative">
+  <Mail className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
 
-      <Mail className="absolute left-3 top-3.5 w-5 h-5 text-[#0B4F8A]" />
-
-      <input
-  type={showPassword ? "text" : "password"}
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  placeholder="••••••••"
-  className="w-full pl-11 pr-12 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
-/>
-
-<button
-  type="button"
-  onClick={() => setShowPassword(!showPassword)}
-  className="absolute right-3 top-3 text-gray-500 hover:text-[#0B4F8A]"
->
-  {showPassword ? (
-    <EyeOff className="w-5 h-5" />
-  ) : (
-    <Eye className="w-5 h-5" />
-  )}
-</button>
-    </div>
+  <input
+    type="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    placeholder="name@company.com"
+    className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#16A5E8] focus:border-[#16A5E8]"
+  />
+</div>
 
   </div>
 
