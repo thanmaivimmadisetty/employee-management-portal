@@ -133,6 +133,8 @@ exports.deleteEmployee = async (req, res) => {
   }
 };
 exports.uploadProfilePhoto = async (req, res) => {
+  console.log("Profile upload endpoint hit");
+console.log("Uploaded file:", req.file);
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No image uploaded' });
