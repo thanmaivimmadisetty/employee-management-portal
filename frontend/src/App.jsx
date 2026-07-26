@@ -20,7 +20,7 @@ import EmployeeOnboarding from './pages/EmployeeOnboarding';
 import OnboardingRequests from './pages/OnboardingRequests';
 import Tasks from "./pages/Tasks";
 import TrackerDashboard from "./pages/TrackerDashboard";
-
+import VerifyOtp from "./pages/VerifyOtp";
 function App() {
   return (
     <Router>
@@ -94,7 +94,10 @@ function App() {
           <Route element={<Layout title="Analytical Reports" />}>
             <Route path="/reports" element={<Reports />} />
           </Route>
-
+<Route
+  path="/verify-otp"
+  element={<VerifyOtp />}
+/>
           {/* HR/Admin Onboarding Requests */}
           <Route element={<Layout title="Employee Onboarding Requests" />}>
             <Route
