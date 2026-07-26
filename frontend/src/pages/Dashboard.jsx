@@ -82,7 +82,7 @@ useEffect(() => {
           <div>
             <h1 className="text-3xl font-bold">Welcome, {user?.firstName || user?.name || "User"} 👋</h1>
             <p className="mt-2 text-blue-100">
-  Employee ID: {user?.employeeId || "N/A"}
+  Employee ID: {user?.id ? `EMP${String(user.id).padStart(3, "0")}` : "N/A"}
 </p>
             <p className="mt-2 text-blue-100">Employee Dashboard</p>
           </div>
