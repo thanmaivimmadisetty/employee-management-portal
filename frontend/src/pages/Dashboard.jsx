@@ -72,7 +72,6 @@ useEffect(() => {
   };
 const handlePhotoUpload = async (event) => {
   const file = event.target.files[0];
-
   if (!file) return;
 
   try {
@@ -81,7 +80,7 @@ const handlePhotoUpload = async (event) => {
     const formData = new FormData();
     formData.append("profilePhoto", file);
 
-    const res = await api.post(
+    await api.post(
       `/employees/${user.id}/profile-photo`,
       formData,
       {
@@ -91,8 +90,16 @@ const handlePhotoUpload = async (event) => {
       }
     );
 
-    
-  if (loading) return <div className="flex h-screen items-center justify-center"><h2 className="text-2xl font-bold text-[#0B4F8A]">Loading Dashboard...</h2></div>;
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to upload image.");
+  } finally {
+    setUploading(false);
+  }
+};
+
+if (loading) return <div className="flex h-screen items-center justify-center"><h2 className="text-2xl font-bold text-[#0B4F8A]">Loading Dashboard...</h2></div>;
 
   return (
     <div className="space-y-8">
