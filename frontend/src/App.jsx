@@ -21,6 +21,7 @@ import OnboardingRequests from './pages/OnboardingRequests';
 import Tasks from "./pages/Tasks";
 import TrackerDashboard from "./pages/TrackerDashboard";
 import VerifyOtp from "./pages/VerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
 function App() {
   return (
     <Router>
@@ -36,7 +37,10 @@ function App() {
           <Route element={<Layout title="ZaynLevi Technologies" />}>
   <Route path="/" element={<Dashboard />} />
 </Route>
-
+<Route
+  path="/reset-password"
+  element={<ResetPassword />}
+/>
           {/* Employees */}
           <Route element={<Layout title="Employees" />}>
             <Route path="/employees" element={<Employees />} />
