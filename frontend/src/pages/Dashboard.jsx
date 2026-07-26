@@ -26,21 +26,23 @@ const Dashboard = () => {
     log: null,
   });
 
-  useEffect(() => {
-    const loadDashboard = async () => {
-      try {
-        await api.get("/reports/dashboard");
-        const attendance = await api.get("/attendance/today");
-        setTodayStatus(attendance.data);
-        setDbConnected(true);
-      } catch {
-        setDbConnected(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadDashboard();
-  }, []);
+useEffect(() => {
+  const loadDashboard = async () => {
+    try {
+      // Only load data that every logged-in employee can access
+      const attendance = await api.get("/attendance/today");
+      setTodayStatus(attendance.data);
+      setDbConnected(true);
+    } catch (error) {
+      console.error("Dashboard loading failed:", error);
+      setDbConnected(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadDashboard();
+}, []);
 
   const refreshAttendance = async () => {
     const attendance = await api.get("/attendance/today");
