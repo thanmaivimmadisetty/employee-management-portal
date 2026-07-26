@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import api from '../utils/api';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
-import { CalendarRange, Check, X, UserCheck, ShieldAlert } from 'lucide-react';
+import { CalendarRange, Check, X, UserCheck, ShieldAlert, Calendar } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Leaves = () => {
@@ -19,6 +19,9 @@ const Leaves = () => {
   const [reason, setReason] = useState('');
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  // Month filter
+  const [monthFilter, setMonthFilter] = useState('All');
 
   const mockLeaves = [
     { id: 1, employeeId: 4, employeeName: 'David Employee', departmentName: 'Engineering', leaveType: 'Sick Leave', startDate: '2026-06-20', endDate: '2026-06-22', reason: 'Medical checkup and rest', status: 'Approved', approverName: 'Sarah HR' },
@@ -46,6 +49,23 @@ const Leaves = () => {
   useEffect(() => {
     fetchLeaves();
   }, []);
+
+  // List of month names for the filter dropdown.
+  const monthOptions = useMemo(() => ([
+    'All', 'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]), []);
+
+  // Filter leave records by the month of their Start Date.
+  const filteredLeaves = useMemo(() => {
+    if (monthFilter === 'All') return leaves;
+    return leaves.filter(l => {
+      if (!l.startDate) return false;
+      const d = new Date(l.startDate);
+      if (isNaN(d.getTime())) return false;
+      return d.toLocaleString('en-US', { month: 'long' }) === monthFilter;
+    });
+  }, [leaves, monthFilter]);
 
   const handleApplyOpen = () => {
     setLeaveType('Sick Leave');
@@ -111,10 +131,10 @@ const Leaves = () => {
   const role = user?.roleName;
   const isEmployee = role === 'Employee';
 
-  // Filter requests based on status/ownership
-  const myRequests = isEmployee ? leaves : leaves.filter(l => l.employeeId === user.id);
-  const pendingApprovals = isEmployee ? [] : leaves.filter(l => l.status === 'Pending');
-  const pastApprovals = isEmployee ? [] : leaves.filter(l => l.status !== 'Pending');
+  // Filter requests based on status/ownership (now sourced from the month-filtered list)
+  const myRequests = isEmployee ? filteredLeaves : filteredLeaves.filter(l => l.employeeId === user.id);
+  const pendingApprovals = isEmployee ? [] : filteredLeaves.filter(l => l.status === 'Pending');
+  const pastApprovals = isEmployee ? [] : filteredLeaves.filter(l => l.status !== 'Pending');
 
   return (
     <div className="space-y-8">
@@ -135,13 +155,27 @@ const Leaves = () => {
             Submit sick leaves, vacation leaves, or casual day-offs.
           </p>
         </div>
-        <button
-          onClick={handleApplyOpen}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold rounded-xl transition-all shadow-md"
-        >
-          <CalendarRange className="w-4 h-4" />
-          Apply for Leave
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-slate-500" />
+            <select
+              value={monthFilter}
+              onChange={(e) => setMonthFilter(e.target.value)}
+              className="p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 focus:outline-none focus:border-brand-500 text-xs font-semibold"
+            >
+              {monthOptions.map(m => (
+                <option key={m} value={m}>{m === 'All' ? 'All Months' : m}</option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={handleApplyOpen}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold rounded-xl transition-all shadow-md"
+          >
+            <CalendarRange className="w-4 h-4" />
+            Apply for Leave
+          </button>
+        </div>
       </div>
 
       {/* Pending approvals section (Managers/HR/Admin only) */}
@@ -237,14 +271,14 @@ const Leaves = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/40 text-sm">
-              {(isEmployee ? myRequests : leaves).length === 0 ? (
+              {(isEmployee ? myRequests : filteredLeaves).length === 0 ? (
                 <tr>
                   <td colSpan={isEmployee ? 6 : 7} className="py-8 px-6 text-center text-slate-500">
                     No leave history records found.
                   </td>
                 </tr>
               ) : (
-                (isEmployee ? myRequests : leaves).map((req) => (
+                (isEmployee ? myRequests : filteredLeaves).map((req) => (
                   <tr key={req.id} className="hover:bg-slate-900/10">
                     {!isEmployee && <td className="py-4 px-6 font-semibold text-slate-200">{req.employeeName}</td>}
                     <td className="py-4 px-6 text-slate-300">{req.leaveType}</td>
