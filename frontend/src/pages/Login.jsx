@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Briefcase, Lock, Mail, AlertCircle, Eye, EyeOff } from 'lucide-react';
-
+import logo from "../logo.png";
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -56,17 +56,21 @@ const Login = () => {
 
         <div className="text-center mb-8">
 
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#0B4F8A] to-[#16A5E8] flex items-center justify-center mx-auto shadow-xl">
+         <img
+  src={logo}
+  alt="ZaynLevi Logo"
+  className="w-16 h-16 mx-auto rounded-2xl bg-white p-2 shadow-xl object-contain"
+/>
 
-            <Briefcase className="w-8 h-8 text-white"/>
+        <div className="mt-5 text-center">
+  <h1 className="text-3xl font-extrabold text-white">
+    ZaynLevi Technologies
+  </h1>
 
-          </div>
-
-          <h1 className="mt-5 text-4xl font-extrabold text-white">
-
-            Employee Management System
-
-          </h1>
+  <p className="text-lg text-blue-100 font-medium">
+    Employee Management System
+  </p>
+</div>
 
         </div>
 
