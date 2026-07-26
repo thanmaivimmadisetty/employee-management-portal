@@ -79,6 +79,9 @@ const Dashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">Welcome, {user?.firstName || user?.name || "User"} 👋</h1>
+            <p className="mt-2 text-blue-100">
+  Employee ID: {user?.employeeId || "N/A"}
+</p>
             <p className="mt-2 text-blue-100">Employee Dashboard</p>
           </div>
           <div className="rounded-2xl bg-white/10 p-6">
