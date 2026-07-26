@@ -113,18 +113,19 @@ exports.getMe = async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT
-        e.id,
-        e.id AS employeeId,
-        e.first_name,
-        e.last_name,
-        e.email,
-        e.role_id,
-        e.department_id,
-        e.joining_date,
-        e.status,
-        e.salary,
-        r.name as roleName,
-        d.name as departmentName
+    e.id,
+    e.employee_id AS employeeId,
+    e.first_name AS firstName,
+    e.last_name AS lastName,
+    e.email,
+    e.role_id AS roleId,
+    e.department_id AS departmentId,
+    e.joining_date AS joiningDate,
+    e.status,
+    e.salary,
+    e.profile_photo AS profilePhoto,
+    r.name AS roleName,
+    d.name AS departmentName
       FROM employees e
       JOIN roles r
       ON e.role_id = r.id
