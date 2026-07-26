@@ -1,6 +1,9 @@
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require("crypto");
+const { sendOTP } = require("../utils/mailer");
+const pool = require("../config/db");
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -191,6 +194,57 @@ exports.resetPassword = async (req, res) => {
 
     res.status(500).json({
       message: "Unable to reset password"
+    });
+  }
+};
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check if employee exists
+    const [employees] = await pool.query(
+      "SELECT id FROM employees WHERE email = ?",
+      [email]
+    );
+
+    if (employees.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Email not found",
+      });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // OTP valid for 5 minutes
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    // Delete old OTPs
+    await pool.query(
+      "DELETE FROM password_reset_otp WHERE email = ?",
+      [email]
+    );
+
+    // Save new OTP
+    await pool.query(
+      "INSERT INTO password_reset_otp (email, otp, expires_at) VALUES (?, ?, ?)",
+      [email, otp, expiresAt]
+    );
+
+    // Send email
+    await sendOTP(email, otp);
+
+    return res.json({
+      success: true,
+      message: "OTP sent successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send OTP.",
     });
   }
 };
