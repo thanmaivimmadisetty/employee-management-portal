@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import api from '../utils/api';
 import Table from '../components/Table';
-import { LogIn, LogOut, CheckCircle2, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { LogIn, LogOut, CheckCircle2, AlertTriangle, ShieldAlert, Calendar } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Attendance = () => {
@@ -16,6 +16,10 @@ const Attendance = () => {
   const [employeeId, setEmployeeId] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  // Month / Day filters
+  const [monthFilter, setMonthFilter] = useState('All');
+  const [dayFilter, setDayFilter] = useState('All');
 
   const mockLogs = [
     { id: 1, employeeId: 3, employeeName: 'John Manager', departmentName: 'Engineering', date: '2026-06-30', checkIn: '08:55:00', checkOut: null, status: 'Present' },
@@ -68,6 +72,38 @@ const Attendance = () => {
   useEffect(() => {
     fetchAttendance();
   }, [employeeId, startDate, endDate]);
+
+  // Month / Day options for the filter dropdowns.
+  const monthOptions = useMemo(() => ([
+    'All', 'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]), []);
+
+  const dayOptions = useMemo(() => ([
+    'All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+  ]), []);
+
+  // Filter shift logs by the month and/or day-of-week of their attendance date.
+  const filteredLogs = useMemo(() => {
+    return logs.filter(log => {
+      if (monthFilter === 'All' && dayFilter === 'All') return true;
+      if (!log.date) return false;
+      const d = new Date(log.date);
+      if (isNaN(d.getTime())) return false;
+
+      if (monthFilter !== 'All') {
+        const monthLabel = d.toLocaleString('en-US', { month: 'long' });
+        if (monthLabel !== monthFilter) return false;
+      }
+
+      if (dayFilter !== 'All') {
+        const dayLabel = d.toLocaleString('en-US', { weekday: 'long' });
+        if (dayLabel !== dayFilter) return false;
+      }
+
+      return true;
+    });
+  }, [logs, monthFilter, dayFilter]);
 
   const handleCheckIn = async () => {
     setSubmitting(true);
@@ -246,9 +282,37 @@ const Attendance = () => {
 
       {/* Logs Table */}
       <div className="space-y-4">
-        <h4 className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-          {showFilters ? 'Employee Shift Logs' : 'My Shift Logs'}
-        </h4>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h4 className="text-sm font-bold text-slate-300 uppercase tracking-wider">
+            {showFilters ? 'Employee Shift Logs' : 'My Shift Logs'}
+          </h4>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-slate-500" />
+              <select
+                value={monthFilter}
+                onChange={(e) => setMonthFilter(e.target.value)}
+                className="p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 focus:outline-none focus:border-brand-500 text-xs font-semibold"
+              >
+                {monthOptions.map(m => (
+                  <option key={m} value={m}>{m === 'All' ? 'All Months' : m}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-slate-500" />
+              <select
+                value={dayFilter}
+                onChange={(e) => setDayFilter(e.target.value)}
+                className="p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 focus:outline-none focus:border-brand-500 text-xs font-semibold"
+              >
+                {dayOptions.map(d => (
+                  <option key={d} value={d}>{d === 'All' ? 'All Days' : d}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
 
         {loading ? (
           <div className="flex h-48 items-center justify-center">
@@ -267,14 +331,14 @@ const Attendance = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/40 text-sm">
-              {logs.length === 0 ? (
+              {filteredLogs.length === 0 ? (
                 <tr>
                   <td colSpan={showFilters ? 6 : 4} className="py-8 px-6 text-center text-slate-500">
                     No shift records found.
                   </td>
                 </tr>
               ) : (
-                logs.map((log) => (
+                filteredLogs.map((log) => (
                   <tr key={log.id} className="hover:bg-slate-900/10">
                     {showFilters && <td className="py-4 px-6 font-semibold text-slate-200">{log.employeeName}</td>}
                     {showFilters && <td className="py-4 px-6 text-slate-400">{log.departmentName || 'Unassigned'}</td>}
